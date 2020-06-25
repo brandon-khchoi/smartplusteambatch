@@ -1,0 +1,459 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+spring:
+  profiles:
+    active:
+#    - dblocal
+    - dbReal
+#    - redislocal
+    - redisReal
+    - loglocal
+#    - adminlocal
+    - tomcatReal
+#    - tomcatlocal
+    
+  application:
+    name: luna-admin
+  jackson:
+    default-property-inclusion: NON_NULL
+
+mybatis:
+  type-aliases-package: kr.co.lunasoft.lunaadmin.vo  
+
+# dblocal 환경
+# mslocal 환경
+---
+spring:
+  profiles: dblocal
+  
+  mongodb:
+    uri: mongodb://team-core:HappyEnding201910!@test-log.cluster-cghtjgokrsze.ap-northeast-2.docdb.amazonaws.com:27017
+  
+  dbmall:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-cluster.cluster-ro-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306/?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true 
+
+  dbmallWrite:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-cluster.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306/?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true           
+          
+  dbadmin:
+    datasource:
+      hikari:                  
+        jdbc-url: jdbc:mysql://test-cluster.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true 
+                    
+  dbadminWrite:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-cluster.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true  
+  #회원동기화 구어드민 접속정보        
+  dbadminold:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-old.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+#        driverClassName: com.mysql.cj.jdbc.Driver
+        driverClassName: com.mysql.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull
+  #회원동기화 shop의 정보 개별 DB 접속정보 조회를 위한 conn       
+  dblunatalk:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-old.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull  
+  #회원동기화 shop의 재고관리 정보 개별 DB 접속정보 조회를 위한 conn        
+  dblunainvendely:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-old.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com?autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull           
+  #회원동기화 회원별 동적 DB conn 세팅에 사용하는정보
+  dbmember:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://test-old.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: brian
+        password: brian01076225850
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        dbmember-default-ip: test-old.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull    
+
+  dblunachat:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://175.126.38.232:3306?&autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: lunaremote1014
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull                                
+   
+# dbReal 환경
+---
+spring:
+  profiles: dbReal
+  
+  mongodb:
+    uri: mongodb://team-core:WlsWkdlfgkrltlfgek!@prod-log.cluster-cghtjgokrsze.ap-northeast-2.docdb.amazonaws.com:5637
+  
+  dbmall:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://production-rds-mall.cluster-ro-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:56375/?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: admin-mall
+        password: lunaAdminMall201906!
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 50
+        #minimum-idle: 100
+        max-lifetime: 60000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true 
+
+  
+  dbmallWrite:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://production-rds-mall.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:56375/?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: admin-mall
+        password: lunaAdminMall201906!
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 50
+        #minimum-idle: 100
+        max-lifetime: 60000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true           
+          
+          
+  dbadmin:
+    datasource:
+      hikari:                  
+        jdbc-url: jdbc:mysql://production-rds-admin.cluster-ro-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:56375?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: admin-base
+        password: lunaAdminBase201906!
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 30
+        #minimum-idle: 100
+        max-lifetime: 60000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true 
+                    
+  dbadminWrite:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://production-rds-admin.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:56375?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
+        username: admin-base
+        password: lunaAdminBase201906!
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 30
+        #minimum-idle: 100
+        max-lifetime: 60000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true  
+
+  #회원동기화 구어드민 접속정보        
+  dbadminold:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://116.125.120.14:3306?autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: fnskdnjsrur888!
+#        driverClassName: com.mysql.cj.jdbc.Driver
+        driverClassName: com.mysql.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull
+  #회원동기화 shop의 정보 개별 DB 접속정보 조회를 위한 conn       
+  dblunatalk:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://110.10.130.118:3306?autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: lunaremote1014
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull  
+  #회원동기화 shop의 재고관리 정보 개별 DB 접속정보 조회를 위한 conn        
+  dblunainvendely:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://175.126.38.232:3306?autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: lunaremote1014
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull           
+  #회원동기화 회원별 동적 DB conn 세팅에 사용하는정보
+  dbmember:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://175.126.33.129:3306?autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: lunaremote1014
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        dbmember-default-ip: 175.126.33.129
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull
+
+  dblunachat:
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://175.126.38.232:3306?&autoReconnect=true&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false
+        username: lunaremote
+        password: lunaremote1014
+        driverClassName: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: 10
+        #minimum-idle: 100
+        max-lifetime: 1800000 #1800000
+        connection-timeout: 30000 #30000
+        validation-timeout: 5000
+        #connection-test-query: SELECT 1      
+        data-source-properties: 
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          zeroDateTimeBehavior: convertToNull              
+
+---
+
+spring:
+  profiles: redislocal    
+  redis:
+    host: dev-redis.eehi9l.0001.apn2.cache.amazonaws.com
+    port: 6379
+
+---
+
+spring:
+  profiles: redisReal    
+  redis:
+    host: production-ladmin.eehi9l.0001.apn2.cache.amazonaws.com
+    port: 6379    
+         
+
+---
+spring:
+  profiles: adminlocal
+  boot:
+    admin:
+      client:
+         url: http://localhost:9090
+
+
+---
+spring:
+  profiles: tomcatlocal
+
+server:
+  port: 8080
+        
+  tomcat:
+    accesslog:
+      enabled: true
+      prefix: access_log_ladmin-api
+      pattern: "[%A] [%v] [%{yyyy-MM-dd HH:mm:ss}t]  [%a] [%h] [%S] [accesslog] [%m] [%r] [%{User-Agent}i]"
+    basedir: E:\logs
+  
+---
+spring:
+  profiles: tomcatReal
+
+server:
+  port: 80
+        
+  tomcat:
+    accesslog:
+      enabled: true
+      prefix: access_log_ladmin-api
+      pattern: "[%A] [%v] [%{yyyy-MM-dd HH:mm:ss}t]  [%a] [%h] [%S] [accesslog] [%m] [%r] [%{User-Agent}i]"
+    basedir: /tomcat/      
+ 

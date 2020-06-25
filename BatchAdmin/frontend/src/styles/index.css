@@ -1,0 +1,318 @@
+/* POPUP - userPopup */
+
+.popupWrap .popupContentWrap {
+    width: 440px;
+}
+
+.popupWrap .popupContentWrap article .articleWrap:first-child td {
+    line-height: 26px;
+}
+
+.popupWrap .popupContentWrap .tableList {
+    margin: 10px 0 0;
+    border-top: 1px solid #e3e5e8;
+}
+
+.popupWrap .popupContentWrap .tableList td {
+    line-height: 1
+}
+
+.popupWrap .popupContentWrap .tableList span {
+    margin-right: 10px;
+    display: inline-block;
+    width: 46px;
+    margin-top: -2px;
+    line-height: 24px;
+    border-radius: 13px;
+    text-align: center;
+}
+
+.ModalTabsSetting .popupWrap .popupContentWrap {
+    width: 100%;
+}
+
+.ModalTabsSetting .tableRegister table tbody td {
+    text-align: left;
+}
+
+
+/*	//	PAGE - MEMBER	*/
+
+
+/*	//	PAGE - calendarWrapper	*/
+
+.calendarWrapper select,
+.calendarWrapper div,
+.calendarWrapper ul,
+.calendarWrapper li {
+    display: inline-block;
+}
+
+.calendarWrapper .datepicker div {
+    width: 100%;
+}
+
+.UserList .calendarWrapper .datepicker {
+    width: calc((100% - 405px)/2);
+    min-width: 130px;
+}
+
+.UserList .calendarWrapper select {
+    width: calc(34% - 79px);
+}
+
+.calendarWrapper .dash {
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    width: 14px;
+    vertical-align: middle;
+    margin: 0 5px;
+}
+
+.calendarWrapper .dash:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 1px;
+    background: #949494;
+    top: 0;
+    left: 2px;
+}
+
+
+/*	//	PAGE - calendarWrapper	*/
+
+
+/* UserMemo modal start */
+
+.vue-modal-box {
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.v--modal-block-scroll {
+    overflow: auto !important;
+}
+
+.vue-modal-box .dialog-content {
+    flex: 1 0 auto;
+    width: 100%;
+    padding: 15px;
+    font-size: 14px;
+}
+
+.vue-modal-box .dialog-content .dialog-c-title {
+    font-weight: 600;
+    margin: 10px;
+}
+
+.vue-modal-box .dialog-content .dialog-c-text {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.vue-modal-box .dialog-button-wrapper {
+    display: flex;
+    flex: 0 1 auto;
+    width: 100%;
+    border-top: 1px solid #eee;
+}
+
+.vue-modal-box .dialog-button-wrapper .dialog-button {
+    letter-spacing: 1px;
+    flex: 1 1 100%;
+    font-size: 12px !important;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    line-height: 40px;
+    height: 40px;
+}
+
+.vue-modal-box .dialog-button-wrapper .dialog-button:hover {
+    cursor: pointer;
+    background: #eee;
+}
+
+
+/* UserMemo modal end */
+
+
+/* POST CODE */
+
+.Postcode {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .30);
+}
+
+.Postcode .wrapper {
+    width: 600px;
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.Postcode .post-loading {
+    display: inline-block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+}
+
+.Postcode .post-loading div {
+    position: absolute;
+    top: 27px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.Postcode .post-loading div:nth-child(1) {
+    left: 6px;
+    animation: post-loading1 0.6s infinite;
+}
+
+.Postcode .post-loading div:nth-child(2) {
+    left: 6px;
+    animation: post-loading2 0.6s infinite;
+}
+
+.Postcode .post-loading div:nth-child(3) {
+    left: 26px;
+    animation: post-loading2 0.6s infinite;
+}
+
+.Postcode .post-loading div:nth-child(4) {
+    left: 45px;
+    animation: post-loading3 0.6s infinite;
+}
+
+@keyframes post-loading1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes post-loading3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes post-loading2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(19px, 0);
+    }
+}
+
+
+/* POST CODE END*/
+
+
+/* page */
+
+.per-page {
+    width: 70px;
+}
+
+.page-item a {
+    cursor: pointer;
+}
+
+.page-item a.disabled,
+.page-item a.disabled:hover {
+    background: white !important;
+    color: #999;
+    cursor: not-allowed;
+}
+
+
+/* page */
+
+
+/** calandar */
+
+.my-datepicker_calendar {
+    width: 130%;
+}
+
+
+/** size */
+
+.fullwidth {
+    width: calc(100%);
+}
+
+.closeBtn {
+    cursor: pointer;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.inputSmall {
+  padding: 0 10px;
+  width: 150px;
+  min-height: 36px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  line-height: 34px;
+}
+
+.textWordWrap input[type="number"] {
+  min-height: 34px;
+  vertical-align: top;
+  width: calc(100% - 15px) !important;
+  border: none;
+  padding: 0;
+}
+
+.settingDetailWrap .textWordWrap input[type="number"] {
+  text-align: right;
+}
+
+/* 법인상호명 찾기 선택 disable 버튼 */
+[class*="btn_"].btn_min_disable {
+  border: 1px solid #c3e5ff;
+  color: #c3e5ff;
+  line-height: 24px;
+  width: 50px;
+}
+
+/* 검색 화면이 3개가 넘어가면 화면노출 안됨 */
+.searchWrap table tr:nth-child(n+3) {
+  display: contents !important;
+}
+
+.checkboxCenter {
+  margin-left: 4px;
+}

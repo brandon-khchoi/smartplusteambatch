@@ -1,0 +1,40 @@
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@1.0/nanumbarungothicsubset.css);
+
+.NewsIndex .inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.NewsIndex .item a:hover,
+.content .partners .partnersMore a:hover {
+  opacity: 0.7;
+}
+.NewsIndex .item {
+  width: 330px;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+.NewsIndex .item a {
+  display: block;
+  width: 92%;
+  border: 1px solid #e3e5e8;
+}
+.NewsIndex .item img {
+  width: 100%;
+  height: 200px;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.NewsIndex .item .txt-box {
+  padding: 20px 20px 0;
+  height: 120px;
+}
+.NewsIndex .item .txt-box .cate {
+  font-size: 13px;
+  color: #385aeb;
+}
+.NewsIndex .item .txt-box .tit {
+  color: #222;
+  font-size: 18px;
+  margin-top: 10px;
+}
