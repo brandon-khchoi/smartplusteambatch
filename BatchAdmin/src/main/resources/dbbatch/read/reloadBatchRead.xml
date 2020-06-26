@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbbatch.read.ReloadBatchManageMapper">
+        
+        <select id="reloadBatchExistByName" resultType="boolean">
+        	SELECT
+        		IFNULL(MAX(1), 0)
+        	FROM 
+        		db_batch.tb_batch_info t1, db_batch.tb_batch_group_info t2 
+        	WHERE
+        		t1.batch_group_no = t2.batch_group_no
+        		AND t2.batch_group_name = 'reload'
+				AND t2.luna_team_no = 999
+				AND batch_name= #{batchName}
+        </select>
+        
+        <select id="selectReloadBatchList" resultType="kr.co.lunasoft.batchadmin.vo.batch.ReloadBatchVO">
+			SELECT 
+				t1.batch_name batchName,
+				t1.batch_call_url_addr callUrl,
+				t1.use_yn useYn,
+				t1.batch_cycle_sec cycleSec,
+				t1.batch_cycle_type_code cycleTypeCode,
+				t1.batch_time_type_code timeTypeCode,
+				t1.batch_start_time startTime
+			FROM
+				db_batch.tb_batch_info t1, db_batch.tb_batch_group_info t2
+			WHERE
+				t1.batch_group_no = t2.batch_group_no
+				AND t2.batch_group_name = 'reload'
+				AND t2.luna_team_no = 999
+        </select>
+        
+</mapper>

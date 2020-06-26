@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbadmin.read.LoginMapper">
+
+	<select id="loginUserInfo" parameterType="map" resultType="map">
+        SELECT li.luna_no
+              ,li.luna_id
+              ,li.luna_old_id
+              ,li.luna_kor_name
+              ,li.luna_eng_kor_nick_name
+              ,li.luna_eng_nick_name
+              ,li.luna_email_addr
+              ,li.luna_dept_no
+              ,ld.luna_dept_name
+              ,li.luna_team_no
+              ,lt.luna_team_name
+              ,li.luna_part_no
+              ,lp.luna_part_name
+              ,li.luna_auth_no
+          FROM db_admin.tb_luna_user_info li
+               LEFT OUTER JOIN db_admin.tb_luna_team_info lt
+                 ON li.luna_team_no = lt.luna_team_no
+               LEFT OUTER JOIN db_admin.tb_luna_part_info lp
+                 ON li.luna_part_no = lp.luna_part_no
+              ,db_admin.tb_luna_dept_info ld
+         WHERE li.luna_id = #{uid, jdbcType=VARCHAR}
+           AND li.luna_pw = #{hashPw, jdbcType=VARCHAR}
+           AND li.luna_dept_no = ld.luna_dept_no
+           AND li.resign_yn = 0
+	</select>	
+
+    <select id="loginUserMenuMain" parameterType="string" resultType="map">
+        <![CDATA[
+          SELECT mm.menu_main_name
+                ,mm.menu_main_no
+                ,mm.menu_group_no
+                ,mm.menu_url_addr
+            FROM db_admin.tb_menu_main_info mm
+                ,db_admin.tb_menu_auth_info ma
+          WHERE mm.menu_main_no = ma.menu_main_no
+            AND mm.use_yn = 1
+            AND mm.del_yn = 0
+            AND ma.menu_sub_no IS null
+            AND (ma.auth_val&1) = 1
+            AND ma.luna_auth_no = #{luna_auth_no}
+       GROUP BY mm.menu_main_no
+       ORDER BY mm.display_no        
+        ]]>
+    </select>
+
+	<select id="loginUserMenuSub" parameterType="string" resultType="map">
+        <![CDATA[
+          SELECT mm.menu_main_name
+                ,mm.menu_main_no
+                ,ms.menu_sub_name
+                ,ms.menu_sub_no
+                ,ms.menu_url_addr         
+                ,ma.auth_val        
+            FROM db_admin.tb_menu_main_info mm
+                ,db_admin.tb_menu_sub_info ms                
+                ,db_admin.tb_menu_auth_info ma
+          WHERE mm.menu_main_no = ms.menu_main_no
+            AND mm.use_yn = 1
+            AND ms.use_yn = 1
+            AND mm.del_yn = 0
+            AND ms.del_yn = 0
+            AND ma.menu_main_no = mm.menu_main_no 
+            AND ma.menu_sub_no = ms.menu_sub_no
+            AND (ma.auth_val&1) = 1
+            AND ma.luna_auth_no = #{luna_auth_no}
+       ORDER BY mm.display_no
+               ,ms.display_no         
+        ]]>
+	</select>	
+	
+	<select id="checkOrgPw" parameterType="map" resultType="int">
+		SELECT COUNT(1)
+		  FROM db_admin.tb_luna_user_info lui
+		 WHERE lui.luna_no = #{luna_no}
+		   AND lui.luna_pw = #{hashOrgPw}		
+	</select>
+	
+	<select id="checkExistsId" parameterType="map" resultType="int">
+		SELECT COUNT(1) AS cnt
+		  FROM db_admin.tb_luna_user_info lui
+		 WHERE lui.luna_id = #{uid, jdbcType=VARCHAR}
+		   AND lui.resign_yn = 0	 
+	</select>
+	
+	<select id="getUsersMemberNo" parameterType="map" resultType="map">
+		SELECT mn.member_no AS conn_no
+		      ,1 AS main_yn
+		  FROM db_admin.tb_member_info mn
+		 WHERE mn.member_id = #{uid}
+	</select>
+	<select id="getUsersSubMemberNo" parameterType="map" resultType="map">
+		SELECT ms.member_sub_no AS conn_no
+		      ,0 AS main_yn
+		  FROM db_admin.tb_member_sub_info ms
+		 WHERE ms.member_id = #{uid}
+		   AND ms.member_sub_id = #{sub_uid}
+	</select>
+	<select id="selectLunaUserInfo" parameterType="string" resultType="map">
+		SELECT ui.luna_no
+		      ,CONCAT(ui.luna_eng_kor_nick_name,'.',ui.luna_kor_name) AS luna_name
+		  FROM db_admin.tb_luna_user_info ui
+		 WHERE ui.luna_old_id = #{old_luna_id}
+	</select>
+	
+	
+	
+</mapper>

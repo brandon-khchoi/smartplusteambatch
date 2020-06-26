@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbadmin.write.LoginWriteMapper">
+     	
+    <update id="updateLastLoinDate" parameterType="string">
+        UPDATE db_admin.tb_luna_user_info lui
+                SET lui.login_last_date = NOW()
+            WHERE luna_id = #{luna_id}
+    </update>
+    
+    <update id="updatePassword" parameterType="map">
+		UPDATE db_admin.tb_luna_user_info lui
+		   SET lui.luna_pw = #{new_password}
+		      ,lui.update_user_code = 1
+		      ,lui.update_user_no = #{luna_no}
+		 WHERE lui.luna_no = #{luna_no}
+    </update>
+
+</mapper>

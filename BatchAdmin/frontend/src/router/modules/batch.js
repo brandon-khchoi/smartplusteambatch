@@ -1,5 +1,6 @@
 
 import BatchManage from '@/components/batch/BatchManage'
+import BatchManageList from '@/components/batch/BatchManageList'
 import store from '@/vuex/store'
 
 const userMenuAuth = {}
@@ -28,15 +29,15 @@ const requireAuth = () => (from, to, next) => {
 }
 
 const batchRouter = {
-  path: '/batch',
+  path: '/batch/BatchManage',
   component: BatchManage,
-  redirect: '/batch/BatchManage',
+  redirect: '/batch/BatchManage/list',
   beforeEnter: requireAuth(),
   props: {'userMenuAuth': userMenuAuth},
   name: 'batch',
   children: [{
-    path: 'batchManage',
-    component: BatchManage,
+    path: 'list',
+    component: BatchManageList,
     name: 'batchManage'
     // props: makeProps
   }]

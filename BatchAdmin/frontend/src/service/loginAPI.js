@@ -1,7 +1,7 @@
 import axios from '../http-commons'
 
 const getUserInfo = (uid, password) => {
-  return axios.get('/login/loginsubmit', {
+  return axios.post('/login/loginsubmit', {
     params: {
       'uid': uid,
       'password': password

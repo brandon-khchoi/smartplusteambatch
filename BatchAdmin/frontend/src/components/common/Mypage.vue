@@ -31,7 +31,7 @@
                         maxlength="12"
                       placeholder="변경할 비밀번호를 입력해주세요."
                           v-model="user[1]"/>
-                      <span class="info">6자 이상 영소문자, 숫자, 특수문자 입력</span>
+                      <span class="info">6자 이상 영소문자, 숫자, 특수문자( ~!@#$%^&* ) 입력</span>
                     </td>
                   </tr>
                   <tr>
@@ -75,8 +75,23 @@ export default {
     }
   },
   watch: {
-    user () {
+    user (val) {
+      let patternSp = /[^~!@#$%^&*0-9A-Za-z]/g
       this.user_btn = false
+
+      if (patternSp.test(val[1])) {
+        this.$modal.show(ModalAlert,
+          {
+            title: '비밀번호',
+            text: '~!@#$%^&* 만 가능합니다.'
+          }, {
+            width: 450,
+            height: 167
+          })
+        val[1] = val[1].replace(patternSp, '')
+        return false
+      }
+
       if (this.user[0] && this.user[1] && this.user[2]) {
         if (this.user[1] === this.user[2]) {
           this.user_btn = true

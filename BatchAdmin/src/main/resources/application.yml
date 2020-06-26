@@ -10,14 +10,11 @@ management:
 spring:
   profiles:
     active:
-#    - dblocal
-    - dbReal
-#    - redislocal
-    - redisReal
+    - dblocal
+    - redislocal
+#    - dbReal
     - loglocal
-#    - adminlocal
-    - tomcatReal
-#    - tomcatlocal
+    - tomcatlocal
     
   application:
     name: luna-admin
@@ -25,7 +22,7 @@ spring:
     default-property-inclusion: NON_NULL
 
 mybatis:
-  type-aliases-package: kr.co.lunasoft.lunaadmin.vo  
+  type-aliases-package: kr.co.lunasoft.batchadmin.vo
 
 # dblocal 환경
 # mslocal 환경

@@ -1,25 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import MemberRouter from './modules/member'
-import AccountRouter from './modules/account'
-import MenuAuthRouter from './modules/menuauth'
-import ServiceSettingRouter from './modules/serviceSetting'
-import SmartStoreRouter from './modules/smartstore'
-import MenuConfRouter from './modules/menuconf'
-import SalesRouter from './modules/sales'
-import PaperRouter from './modules/paper'
 import BatchRouter from './modules/batch'
-import MonitorRouter from './modules/monitor'
-import OperationsettingRouter from './modules/operationsetting'
-import AlimgrptempRouter from './modules/alimgrptemp'
 import Mypage from '@/components/common/Mypage'
 import HelloWorld from '@/components/HelloWorld'
 import DashBoard from '@/components/common/DashBoard'
 import EmptyPage from '@/components/common/EmptyPage'
-import NoticeRouter from './modules/notice'
-import QnaRouter from './modules/qna'
-import NewsRouter from './modules/news'
-import FaqRouter from './modules/faq'
 
 import Login from '@/components/common/Login'
 // 로그인 성공시, actions에서 store에 isAuth값을 true로 바꿔줬다. 그걸 이용한다.
@@ -74,22 +59,7 @@ const router = new Router({
       name: 'mypage',
       component: Mypage
     },
-    MemberRouter,
-    AccountRouter,
-    MenuAuthRouter,
-    ServiceSettingRouter,
-    SmartStoreRouter,
-    MenuConfRouter,
-    SalesRouter,
-    PaperRouter,
-    OperationsettingRouter,
-    AlimgrptempRouter,
-    BatchRouter,
-    MonitorRouter,
-    NewsRouter,
-    NoticeRouter,
-    QnaRouter,
-    FaqRouter
+    BatchRouter
     ]
   }
   ]
