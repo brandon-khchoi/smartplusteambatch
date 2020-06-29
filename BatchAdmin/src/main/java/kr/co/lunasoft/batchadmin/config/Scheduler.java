@@ -9,6 +9,7 @@ import kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -55,7 +56,11 @@ public class Scheduler implements DisposableBean {
 	}
 
 	private void setExecuteServerIP() {
-		RestTemplate restTemplate = new RestTemplate();
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+		factory.setConnectTimeout(10000);
+		factory.setReadTimeout(10000);
+
+		RestTemplate restTemplate = new RestTemplate(factory);
 		try {
 			myIp = restTemplate.getForObject("http://169.254.169.254/latest/meta-data/local-ipv4", String.class);
 		} catch (Exception e) {
