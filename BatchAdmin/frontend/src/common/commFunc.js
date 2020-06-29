@@ -107,6 +107,8 @@ if (location.host === 'ladmin.lunasoft.co.kr') { // 리얼환경
   gatewayApiUrl = 'https://shopapi.lunasoft.co.kr'
   reloadApiUrl = 'https://prd-reload-service-api.lunasoft.co.kr'
   imageApiUrl = 'https://iagent.lunasoft.co.kr'
+  lunaplusApi = 'https://lunaplus6.lunasoft.co.kr/lunaplus'
+  v1Api = 'https://v1.lunasoft.co.kr/api'
 } else if (location.host === 'staging-ladmin.lunasoft.co.kr') { // 스테이징
   apiServerUrl = 'https://staging-admin-parcelapi.lunasoft.co.kr/api'
   apiLogServerUrl = ' https://test-luna-log-api.lunasoft.co.kr/api'
@@ -114,6 +116,8 @@ if (location.host === 'ladmin.lunasoft.co.kr') { // 리얼환경
   gatewayApiUrl = 'https://devshopapi.lunasoft.co.kr'
   reloadApiUrl = 'https://dev-reload-service-api.lunasoft.co.kr'
   imageApiUrl = 'https://teiagent.lunasoft.co.kr'
+  lunaplusApi = 'https://test-lunaplus6.lunasoft.co.kr/lunaplus'
+  v1Api = 'https://test-v1.lunasoft.co.kr/api'
 } else { // test 및 로컬 도메인
   apiServerUrl = 'https://test-admin-parcelapi.lunasoft.co.kr/api' // 닷넷 core test 환경
   apiLogServerUrl = ' https://test-luna-log-api.lunasoft.co.kr/api'
@@ -122,4 +126,6 @@ if (location.host === 'ladmin.lunasoft.co.kr') { // 리얼환경
   // smartStroreApiUrl = 'http://192.168.0.51'
   reloadApiUrl = 'https://dev-reload-service-api.lunasoft.co.kr'
   imageApiUrl = 'https://teiagent.lunasoft.co.kr'
+  lunaplusApi = 'https://test-lunaplus6.lunasoft.co.kr/lunaplus'
+  v1Api = 'https://test-v1.lunasoft.co.kr/api'
 }

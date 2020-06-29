@@ -36,71 +36,60 @@
      </div>
      <div class="nav">
        <ul>
-        <li
-           v-for="mItem in menuList"
-           @click="onMainClick(mItem.menu_main_no)"
-           :class="{ opened: isSelectedMain(mItem.menu_main_no) }"
-           :key="mItem.menu_main_no">
+         <li @click="onMainClick(0)"
+             :class="{ opened: isSelectedMain(0) }"
+         >
            <h2>
-             <i class="icon" :class="[mItem.icon]"></i>
-             <span>{{ mItem.menu_main_name }}</span>
-             <span>
-                <i
-                  v-if="!isHomeMenu(mItem.menu_main_no)"
-                  class="fas fa-chevron-down arrow">
-                </i>
-             </span>
+             <i class="icon fa fa-cubes"></i>
+               <span>코어개발팀</span>
+               <span>
+                 <i class="fas fa-chevron-down arrow">
+                 </i>
+               </span>
            </h2>
-           <vue-slide-toggle
-            :open="isSelectedMain(mItem.menu_main_no)"
-            :duration="200"
-            tag="div">
-            <ul v-if="!!mItem.subMenu.length">
-              <li
-                v-for="sItem in mItem.subMenu"
-                @click.stop="onSubClick(mItem.menu_main_no, sItem.menu_sub_no, sItem.menu_url_addr)"
-                :class="{ active : isSelectedSub(sItem.menu_sub_no) }"
-                :key="sItem.menu_sub_no">
-                <a> {{sItem.menu_sub_name}} </a>
-              </li>
-            </ul>
+             <vue-slide-toggle
+               :open="isSelectedMain(0)"
+               :duration="200"
+               tag="div">
+             <ul>
+               <li class="active" @click.stop="onSubClick(0,0, 'batch')">
+                <a>배치상세</a>
+               </li>
+             </ul>
            </vue-slide-toggle>
          </li>
+<!--        <li-->
+<!--           v-for="mItem in menuList"-->
+<!--           @click="onMainClick(mItem.menu_main_no)"-->
+<!--           :class="{ opened: isSelectedMain(mItem.menu_main_no) }"-->
+<!--           :key="mItem.menu_main_no">-->
+<!--           <h2>-->
+<!--             <i class="icon" :class="[mItem.icon]"></i>-->
+<!--             <span>{{ mItem.menu_main_name }}</span>-->
+<!--             <span>-->
+<!--                <i-->
+<!--                  v-if="!isHomeMenu(mItem.menu_main_no)"-->
+<!--                  class="fas fa-chevron-down arrow">-->
+<!--                </i>-->
+<!--             </span>-->
+<!--           </h2>-->
+<!--           <vue-slide-toggle-->
+<!--            :open="isSelectedMain(mItem.menu_main_no)"-->
+<!--            :duration="200"-->
+<!--            tag="div">-->
+<!--            <ul v-if="!!mItem.subMenu.length">-->
+<!--              <li-->
+<!--                v-for="sItem in mItem.subMenu"-->
+<!--                @click.stop="onSubClick(mItem.menu_main_no, sItem.menu_sub_no, sItem.menu_url_addr)"-->
+<!--                :class="{ active : isSelectedSub(sItem.menu_sub_no) }"-->
+<!--                :key="sItem.menu_sub_no">-->
+<!--                <a> {{sItem.menu_sub_name}} </a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--           </vue-slide-toggle>-->
+<!--         </li>-->
        </ul>
      </div>
-      <!--동기화 요청항목-->
-      <div v-if="isOpenDataSync"
-           style="padding: 30px 0 10px 10px"
-      >
-        <p class="toggleWrap">
-          <label class="switch">
-            <input type="checkbox" v-model="isShowDataSync">
-            <span class="slider"></span>
-          </label>
-          회원정보 가져오기 창 {{isShowDataSync===true?'닫기':'열기'}}
-        </p>
-        <div v-if="isShowDataSync"
-             style="padding: 5px 0 0 0">
-          <input type="text"
-                  v-model="dataSyncMemId"
-                  @input="enFilter($event)"
-                  style="width: 60%;"
-                  maxlength="30"
-                  placeholder="회원 ID 입력"/>
-          <input class="btn_search"
-                  type="button"
-                  @click="dataSync"
-                  value="가져오기"
-                  title="
- 회원등록정보 및 SHOP정보가 갱신됩니다.
-(서비스설정 관련 상세정보는 포함되지 않습니다)
-"
-                  />
-                  <p>회원 및 SHOP 정보가 갱신됩니다.</p>
-                  <p>(서비스세팅 정보 제외)</p>
-        </div>
-      </div>
-      <!--동기화 요청항목-->
    </div>
  </div>
 </template>
