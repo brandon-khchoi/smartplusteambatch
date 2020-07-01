@@ -3,10 +3,10 @@ package kr.co.lunasoft.batchadmin;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class BatchAdminApplicationTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 
