@@ -1,6 +1,6 @@
-# lunaadminfront
+# batchadminfront
 
-> ladminfront
+> batchadminfront
 
 ## Build Setup
 
