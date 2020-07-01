@@ -2,12 +2,8 @@ import axios from 'axios'
 
 let getBaseServerUrl = function () {
   let adminServerUrl = ''
-  if (location.host === 'ladmin.lunasoft.co.kr') { // 리얼환경
-    adminServerUrl = 'https://ladminapi.lunasoft.co.kr'
-  } else if (location.host === 'teladmin.lunasoft.co.kr') { // TEST
-    // adminServerUrl = 'https://teladminapi.lunasoft.co.kr'
-    adminServerUrl = 'https://teladminapi.lunasoft.co.kr'
-    // adminServerUrl = 'http://192.168.0.163:8085'
+  if (location.host === 'batchadmin.lunasoft.co.kr') { // 리얼환경
+    adminServerUrl = 'https://batchadminapi.lunasoft.co.kr'
   } else { //  로컬 도메인
     // adminServerUrl = 'https://teladminapi.lunasoft.co.kr'
     adminServerUrl = 'http://localhost:8080'
