@@ -1,7 +1,7 @@
 {
-    "name": "lunaadminfront",
+    "name": "batchadminfront",
     "version": "1.0.0",
-    "description": "ladminfront",
+    "description": "batchadminfront",
     "author": "sean/core",
     "private": true,
     "scripts": {

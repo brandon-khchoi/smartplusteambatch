@@ -1,4 +1,4 @@
-package kr.co.lunasoft.lunaadmin.config;
+package kr.co.lunasoft.batchadmin.config;
 
 import java.util.Date;
 
@@ -29,7 +29,7 @@ public class SwaggerConfig {
 		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("kr.co.lunasoft.lunaadmin.controller")) 	// 지정한 특정 pacakge 경로만 apidocs로 추출
+				.apis(RequestHandlerSelectors.basePackage("kr.co.lunasoft.batchadmin.controller")) 	// 지정한 특정 pacakge 경로만 apidocs로 추출
 //				.paths(PathSelectors.regex("^(/admin).+")) 		// 포함 경로
 				.build()							
 				.apiInfo(this.apiInfo());															// swagger main 화면 info customizing 
