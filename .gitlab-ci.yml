@@ -69,7 +69,8 @@ master-build-docker:
   image: docker:latest
   stage: master-build-docker
   before_script:
-    - apk add --no-cache curl jq python py-pip
+    #- apk add --no-cache curl jq python py-pip
+    - apk add --update --no-cache curl py-pip
     - pip install awscli
     - $(aws ecr get-login --no-include-email --region "${REGION}")
     - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
