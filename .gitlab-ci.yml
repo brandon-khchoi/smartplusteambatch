@@ -1,0 +1,149 @@
+variables:
+  MASTER_REPOSITORY_URL: 891665634368.dkr.ecr.ap-northeast-2.amazonaws.com/lunasoft/smartplusbatch
+  REGION: ap-northeast-2
+  GIT_SSL_NO_VERIFY: "1"
+  SMARTPLUS_BATCH_SERVER: 172.31.46.41
+
+services:
+- docker:dind
+
+stages:
+#  - prebuild-image-download
+  - build-vue
+  # - dev-build-maven
+  # - dev-build-docker
+  # - dev-deploy
+  # - staging-build-maven
+  # - staging-build-docker
+  # - staging-deploy
+  - master-build-maven
+  - master-build-docker
+
+build-vue:
+  stage: build-vue
+  image: node:latest
+  script:
+    - cd BatchAdmin/frontend
+    - npm install && npm run build
+    
+  artifacts:
+    paths:
+      - BatchAdmin/src/main/resources
+      
+  only:
+    #- develop
+    - master
+
+# prebuild-image-download:
+  # stage: prebuild-image-download
+  # image: docker:latest
+  # before_script:
+    # - apk add --no-cache curl jq python py-pip
+    # - pip install awscli
+    # - $(aws ecr get-login --no-include-email --region "${REGION}")
+    # 
+  # script:
+    # - echo "pulling image..."
+    # - docker pull $DEV_REPOSITORY_URL:prebuild
+    # - docker tag $DEV_REPOSITORY_URL:prebuild batch:prebuild
+  # only:
+    # - develop,staging
+  # except:
+    # - master
+
+master-build-maven:
+  stage: master-build-maven
+  image: maven:3.5.3-jdk-8-alpine
+  script:
+    - cd BatchAdmin
+    - chmod +x mvnw
+    - ./mvnw clean install
+  artifacts:
+    paths:
+      - BatchAdmin/target/BatchAdmin-0.0.1.jar
+  only:
+    - master
+  except:
+    - develop
+master-build-docker:
+  image: docker:latest
+  stage: master-build-docker
+  before_script:
+    - apk add --no-cache curl jq python py-pip
+    - pip install awscli
+    - $(aws ecr get-login --no-include-email --region "${REGION}")
+    - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
+    
+  script:
+    - cd BatchAdmin
+    - echo "Building image..."
+    - docker build --no-cache -t $MASTER_REPOSITORY_URL:latest .
+    - echo "Tagging image..."
+    - docker tag $MASTER_REPOSITORY_URL:latest $MASTER_REPOSITORY_URL:$IMAGE_TAG
+    - echo "Pushing image..."
+    - docker push $MASTER_REPOSITORY_URL:$IMAGE_TAG
+    - docker push $MASTER_REPOSITORY_URL:latest
+  only:
+    - master
+  except:
+    - develop
+
+# dev-build-maven:
+  # stage: dev-build-maven
+  # image: maven:3.5.3-jdk-8-alpine
+  # image: lunaadmin:prebuild
+  # script:
+    # - cd BatchAdmin
+    # - chmod +x mvnw
+    # - ./mvnw clean install
+  # artifacts:
+    # paths:
+      # - BatchAdmin/target/BatchAdmin-0.0.1.jar
+  # only:
+    # - develop
+  # except:
+    # - master,staging
+# 
+# dev-build-docker:
+  # image: docker:18.09
+  # stage: dev-build-docker
+  # before_script:
+    # - apk add --no-cache curl jq python py-pip
+    # - pip install awscli
+    # - $(aws ecr get-login --no-include-email --region "${REGION}")
+    # 
+  # script:
+    # - cd LunaAdmin
+    # - echo "Building image..."
+    # - docker build --no-cache -t $DEV_REPOSITORY_URL:dev .
+    # - echo "Pushing image..."
+    # - docker push $DEV_REPOSITORY_URL:dev
+  # only:
+    # - develop
+  # except:
+    # - master,staging
+# 
+# dev-deploy:
+  # stage: dev-deploy
+  # before_script:
+  #Deploy SSH Key Settings
+  # - apk add --no-cache openssh-client
+  # - mkdir -p ~/.ssh
+  # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+  # - chmod 700 ~/.ssh/id_rsa
+  # - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  # - chmod 644 ~/.ssh/known_hosts
+  # - eval "$(ssh-agent -s)"
+  # - ssh-add ~/.ssh/id_rsa
+  # - echo -e "StrictHostKeyChecking no" >> ~/.ssh/config
+  # - apk add --update --no-cache curl py-pip
+  # - pip install awscli
+  # - ECR_LOGIN="$(aws ecr get-login --no-include-email --region "${REGION}")"
+  # 
+  # script:
+    # - ssh centos@$LUNA_ADMIN_DEV_SERVER "sudo /root/dev_lunaadmin_startup_docker.sh"
+  # only:
+    # - develop
+  # except:
+    # - master,staging
+# 
