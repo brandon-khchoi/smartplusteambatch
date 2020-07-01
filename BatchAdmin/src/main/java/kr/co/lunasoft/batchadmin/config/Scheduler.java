@@ -49,7 +49,7 @@ public class Scheduler implements DisposableBean {
 
 	@Scheduled(fixedDelay = 3000)
 	public void batchExecutor() {
-		if("172.31.100.144".equals(myIp) || "172.31.7.191".equals(myIp)) {		//로컬환경에서 안돌도록  ip 체크
+		if("172.31.46.41".equals(myIp)) {		//로컬환경에서 안돌도록  ip 체크
 			List<BatchInfoVO> batchInfoList = batchManageMapper.selectBatchInfo();
 			batchRegister(batchInfoList);
 		}
