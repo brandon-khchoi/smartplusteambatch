@@ -535,6 +535,16 @@ export default {
           alertFlag = true
           alertStr = '시작타입은 필수값입니다.'
           break
+        } else if (modList[idx].batch_cycle_type_code.toString() === '2' || modList[idx].batch_cycle_type_code.toString() === '4') {
+          if (modList[idx].batch_time_type_code === '') {
+            alertFlag = true
+            alertStr = '지연시작(delay)시 시간포맷은 필수값입니다.'
+            break
+          } else if (modList[idx].batch_start_time === '') {
+            alertFlag = true
+            alertStr = '지연시작(delay)시 시작시간은 필수값입니다.'
+            break
+          }
         } else if (modList[idx].batch_call_url_addr === '') {
           alertFlag = true
           alertStr = '호출 URL은 필수값입니다.'
