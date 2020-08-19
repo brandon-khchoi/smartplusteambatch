@@ -41,7 +41,7 @@
          >
            <h2>
              <i class="icon fa fa-cubes"></i>
-               <span>코어개발팀</span>
+               <span>배치관리자</span>
                <span>
                  <i class="fas fa-chevron-down arrow">
                  </i>
