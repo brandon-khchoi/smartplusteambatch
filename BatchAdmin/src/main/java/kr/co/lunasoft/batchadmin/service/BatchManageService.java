@@ -27,259 +27,263 @@ import java.util.List;
 @Service
 public class BatchManageService {
 
-	@Autowired
-	BatchManageMapper batchManageMapper;
+    @Autowired
+    BatchManageMapper batchManageMapper;
 
-	@Autowired
-	BatchManageWriteMapper batchManageWriteMapper;
+    @Autowired
+    BatchManageWriteMapper batchManageWriteMapper;
 
-	@Autowired
-	Gson gson;
+    @Autowired
+    Gson gson;
 
-	@Qualifier("batchMongoTemplate")
-	@Autowired
-	MongoTemplate mongoTemplate;
+    @Qualifier("batchMongoTemplate")
+    @Autowired
+    MongoTemplate mongoTemplate;
 
-	public ResponseVo getBatchList(BatchInfoVO batchInfo) {
-		ResponseVo responseVo = new ResponseVo();
+    public ResponseVo getBatchList(BatchInfoVO batchInfo) {
+        ResponseVo responseVo = new ResponseVo();
 
-		int perPage = batchInfo.getPerPage();
-		int currentPage = batchInfo.getPage();
-		int lastPage = 0;
-		int startIndex = 0;
+        int perPage = batchInfo.getPerPage();
+        int currentPage = batchInfo.getPage();
+        int lastPage = 0;
+        int startIndex = 0;
 
-		int totCnt = batchManageMapper.selectBatchInfoCount(batchInfo);
+        int totCnt = batchManageMapper.selectBatchInfoCount(batchInfo);
 
-		startIndex = perPage * (currentPage - 1);
-		batchInfo.setPage(startIndex);
-		responseVo.setTotal_cnt(totCnt);
+        startIndex = perPage * (currentPage - 1);
+        batchInfo.setPage(startIndex);
+        responseVo.setTotal_cnt(totCnt);
 
-		List<BatchInfoVO> batchInfoList = batchManageMapper.selectBatchInfoByTeamNo(batchInfo);
+        List<BatchInfoVO> batchInfoList = batchManageMapper.selectBatchInfoByTeamNo(batchInfo);
 
-		responseVo.setData(batchInfoList);
+        responseVo.setData(batchInfoList);
 
-		responseVo.setCurrent_page(currentPage);
-		responseVo.setPer_page(perPage);
-		if (totCnt % perPage == 0)
-			lastPage = (totCnt / perPage);
-		else
-			lastPage = (totCnt / perPage) + 1;
+        responseVo.setCurrent_page(currentPage);
+        responseVo.setPer_page(perPage);
+        if (totCnt % perPage == 0)
+            lastPage = (totCnt / perPage);
+        else
+            lastPage = (totCnt / perPage) + 1;
 
-		responseVo.setLast_page(lastPage);
+        responseVo.setLast_page(lastPage);
 
-		return responseVo;
-	}
+        return responseVo;
+    }
 
-	public String getSearchBatchList(String searchType, String searchUseYn, String searchText, String groupNo, String lunaTeamNo) {
+    public String getSearchBatchList(String searchType, String searchUseYn, String searchText, String groupNo, String lunaTeamNo) {
 
-		HashMap<String, String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>();
 
-		params.put("searchText", "%" + searchText + "%");
-		params.put("groupNo", groupNo);
-		params.put("lunaTeamNo", lunaTeamNo);
-		params.put("searchUseYn", searchUseYn);
+        params.put("searchText", "%" + searchText + "%");
+        params.put("groupNo", groupNo);
+        params.put("lunaTeamNo", lunaTeamNo);
+        params.put("searchUseYn", searchUseYn);
 
-		List<BatchInfoVO> batchInfoList = null;
+        List<BatchInfoVO> batchInfoList = null;
 
-		if ("1".equals(searchType)) {
-			batchInfoList = batchManageMapper.selectSearchBatchInfoByName(params);
-		} else if ("2".equals(searchType)) {
-			batchInfoList = batchManageMapper.selectSearchBatchInfoByUrl(params);
-		}
+        if ("1".equals(searchType)) {
+            batchInfoList = batchManageMapper.selectSearchBatchInfoByName(params);
+        } else if ("2".equals(searchType)) {
+            batchInfoList = batchManageMapper.selectSearchBatchInfoByUrl(params);
+        }
 
-		return gson.toJson(batchInfoList);
-	}
+        return gson.toJson(batchInfoList);
+    }
 
-	public String getBatchGroupList(String lunaTeamNo) {
-		List<BatchGroupVO> batchGroupList = batchManageMapper.selectBatchGroupInfo(lunaTeamNo);
-		return gson.toJson(batchGroupList);
-	}
+    public String getBatchGroupList(String lunaTeamNo) {
+        List<BatchGroupVO> batchGroupList = batchManageMapper.selectBatchGroupInfo(lunaTeamNo);
+        return gson.toJson(batchGroupList);
+    }
 
-	public String getAllBatchGroupList(String lunaTeamNo) {
-		List<BatchGroupVO> batchGroupList = batchManageMapper.selectAllBatchGroupInfo(lunaTeamNo);
-		return gson.toJson(batchGroupList);
-	}
+    public String getAllBatchGroupList(String lunaTeamNo) {
+        List<BatchGroupVO> batchGroupList = batchManageMapper.selectAllBatchGroupInfo(lunaTeamNo);
+        return gson.toJson(batchGroupList);
+    }
 
-	public String updateBatchList(List<BatchInfoVO> batchInfoList) {
+    public String updateBatchList(List<BatchInfoVO> batchInfoList) {
 
-		String resultStr = "";
-		boolean isSuccess = true;
+        String resultStr = "";
+        boolean isSuccess = true;
 
-		for (int i = 0; i < batchInfoList.size(); i++) {
-			BatchInfoVO batchInfo = batchInfoList.get(i);
-			
-			int result = 0;
+        for (int i = 0; i < batchInfoList.size(); i++) {
+            BatchInfoVO batchInfo = batchInfoList.get(i);
 
-			log.info("update batch_no: " + batchInfo.getBatch_no() + "/ batch_name : " + batchInfo.getBatch_name());
+            int result = 0;
 
-			try {
-				if (batchManageMapper.hasBatchName(batchInfo)) {
-					result = -1;
-				} else {
-					if (batchInfo.getBatch_no() == null || "".equals(batchInfo.getBatch_no())) {
-						//새 배치 생성
-						result = batchManageWriteMapper.insertBatchInfo(batchInfo);
-					} else {
-						result = batchManageWriteMapper.updateBatchInfo(batchInfo);
-					}
-				}
-			} catch (Exception e) {
-				log.info(new LogUtil().catchLog(e));
-			}
+            log.info("update batch_no: " + batchInfo.getBatch_no() + "/ batch_name : " + batchInfo.getBatch_name());
 
-			if (result == -1) {
-				resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 동일 배치 명 존재 <br>";
-				isSuccess = false;
-			} else if (result == 1) {
-				resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 성공 <br>";
-			} else {
-				resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 실패 <br>";
-				isSuccess = false;
-			}
-		}
-		if (isSuccess) {
-			resultStr = "success";
-		}
+            try {
+                if (batchManageMapper.hasBatchName(batchInfo)) {
+                    result = -1;
+                } else {
+                    if (batchInfo.getBatch_no() == null || "".equals(batchInfo.getBatch_no())) {
+                        //새 배치 생성
+                        result = batchManageWriteMapper.insertBatchInfo(batchInfo);
+                    } else {
+                        result = batchManageWriteMapper.updateBatchInfo(batchInfo);
+                    }
+                }
+            } catch (Exception e) {
+                log.info(new LogUtil().catchLog(e));
+            }
 
-		return resultStr;
-	}
+            if (result == -1) {
+                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 동일 배치 명 존재 <br>";
+                isSuccess = false;
+            } else if (result == 1) {
+                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 성공 <br>";
+            } else {
+                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 실패 <br>";
+                isSuccess = false;
+            }
+        }
+        if (isSuccess) {
+            resultStr = "success";
+        }
 
-	public String deleteBatchInfo(List<BatchInfoVO> batchInfoList) {
+        return resultStr;
+    }
 
-		String resultStr = "";
-		int result = 0;
-		for (BatchInfoVO batchInfo : batchInfoList) {
-			if (!"".equals(batchInfo.getBatch_no())) {
-				log.info("Delete batch_no: " + batchInfo.getBatch_no() + "/ batch_name : " + batchInfo.getBatch_name());
-				try {
-					result = batchManageWriteMapper.deleteBatchInfo(batchInfo.getBatch_no());
-					Scheduler.stopWorker(batchInfo.getKey());
-				} catch (Exception e) {
-					log.info(new LogUtil().catchLog(e));
-				}
+    public String deleteBatchInfo(List<BatchInfoVO> batchInfoList) {
 
-				if (result != 1) {
-					resultStr += batchInfo.getBatch_name() + " 삭제 실패 <br>";
-				}
-			}
-		}
-		if ("".equals(resultStr)) {
-			resultStr = "success";
-		}
+        String resultStr = "";
+        int result = 0;
+        for (BatchInfoVO batchInfo : batchInfoList) {
+            if (!"".equals(batchInfo.getBatch_no())) {
+                log.info("Delete batch_no: " + batchInfo.getBatch_no() + "/ batch_name : " + batchInfo.getBatch_name());
+                try {
+                    result = batchManageWriteMapper.deleteBatchInfo(batchInfo.getBatch_no());
+                    Scheduler.stopWorker(batchInfo.getKey());
+                } catch (Exception e) {
+                    log.info(new LogUtil().catchLog(e));
+                }
 
-		return resultStr;
-	}
+                if (result != 1) {
+                    resultStr += batchInfo.getBatch_name() + " 삭제 실패 <br>";
+                }
+            }
+        }
+        if ("".equals(resultStr)) {
+            resultStr = "success";
+        }
 
-	public String deleteBatchGroup(String batchGroupNo) {
+        return resultStr;
+    }
 
-		int result;
-		try {
-			result = batchManageWriteMapper.deleteBatchGroup(batchGroupNo);
-			if (result == 1) {
-				return "success";
-			} else {
-				return "fail";
-			}
-		} catch (Exception e) {
-			log.info(new LogUtil().catchLog(e));
-			return "fail";
-		}
-	}
+    public String deleteBatchGroup(String batchGroupNo) {
 
-	public String saveBatchGroup(List<BatchGroupVO> groupList) {
+        int result;
+        try {
+            result = batchManageWriteMapper.deleteBatchGroup(batchGroupNo);
+            if (result == 1) {
+                return "success";
+            } else {
+                return "fail";
+            }
+        } catch (Exception e) {
+            log.info(new LogUtil().catchLog(e));
+            return "fail";
+        }
+    }
 
-		String resultStr = "";
+    public String saveBatchGroup(List<BatchGroupVO> groupList) {
 
-		boolean isSuccess = true;
+        String resultStr = "";
 
-		List<BatchGroupVO> modGroupList = new ArrayList<>();
+        boolean isSuccess = true;
 
-		List<BatchGroupVO> originGroupList = batchManageMapper.selectAllBatchGroupInfo(groupList.get(0).getLuna_team_no());
+        List<BatchGroupVO> modGroupList = new ArrayList<>();
 
-		for (BatchGroupVO vo : groupList) {
-			for (BatchGroupVO originVo : originGroupList) {
-				if ("".equals(vo.getBatch_group_no())) {
-					modGroupList.add(vo);
-					break;
-				} else if (vo.getBatch_group_no().equals(originVo.getBatch_group_no())) {
-					if (!vo.getBatch_group_name().equals(originVo.getBatch_group_name())) {
-						modGroupList.add(vo);
-						break;
-					} else if (!vo.getDisplay_no().equals(originVo.getDisplay_no())) {
-						modGroupList.add(vo);
-						break;
-					} else if (!vo.getUse_yn().equals(originVo.getUse_yn())) {
-						modGroupList.add(vo);
-						break;
-					}
-				}
-			}
-		}
+        List<BatchGroupVO> originGroupList = batchManageMapper.selectAllBatchGroupInfo(groupList.get(0).getLuna_team_no());
 
-		for (int i = 0; i < modGroupList.size(); i++) {
-			BatchGroupVO vo = modGroupList.get(i);
-			try {
+        for (BatchGroupVO vo : groupList) {
+            if ("".equals(vo.getBatch_group_no())) {
+                modGroupList.add(vo);
+            } else {
+                for (BatchGroupVO originVo : originGroupList) {
+                    if (vo.getBatch_group_no().equals(originVo.getBatch_group_no())) {
+                        if (!vo.getBatch_group_name().equals(originVo.getBatch_group_name())) {
+                            modGroupList.add(vo);
+                            break;
+                        } else if (!vo.getDisplay_no().equals(originVo.getDisplay_no())) {
+                            modGroupList.add(vo);
+                            break;
+                        } else if (!vo.getUse_yn().equals(originVo.getUse_yn())) {
+                            modGroupList.add(vo);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
-				int result = 0;
-				if ("".equals(vo.getBatch_group_no())) {
+        log.info(modGroupList.toString());
 
-					if (batchManageMapper.hasBatchGroupName(vo)) {
-						result = -1;
-					} else {
-						result = batchManageWriteMapper.insertBatchGroup(vo);
-					}
+        for (int i = 0; i < modGroupList.size(); i++) {
+            BatchGroupVO vo = modGroupList.get(i);
+            log.info(vo.toString());
+            try {
 
-				} else {
-					result = batchManageWriteMapper.updateBatchGroup(vo);
-				}
+                int result = 0;
+                if ("".equals(vo.getBatch_group_no())) {
 
-				if (result == -1) {
-					resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 동일 배치 그룹 명 존재 <br>";
-					isSuccess = false;
-				} else if (result == 1) {
-					resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 업데이트 성공 <br>";
-				} else if (result != 1) {
-					resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 업데이트 실패 <br>";
-					isSuccess = false;
-				}
+                    if (batchManageMapper.hasBatchGroupName(vo)) {
+                        result = -1;
+                    } else {
+                        result = batchManageWriteMapper.insertBatchGroup(vo);
+                    }
 
-			} catch (Exception e) {
-				log.info(new LogUtil().catchLog(e));
-				return "배치그룹 생성 실패";
-			}
-		}
-		if (isSuccess) {
-			resultStr = "success";
-		}
+                } else {
+                    result = batchManageWriteMapper.updateBatchGroup(vo);
+                }
 
-		return resultStr;
-	}
+                if (result == -1) {
+                    resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 동일 배치 그룹 명 존재 <br>";
+                    isSuccess = false;
+                } else if (result == 1) {
+                    resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 업데이트 성공 <br>";
+                } else if (result != 1) {
+                    resultStr += (i + 1) + ". " + vo.getBatch_group_name() + " 업데이트 실패 <br>";
+                    isSuccess = false;
+                }
 
-	public void updateBatchOff(String batchNo) {
-		try {
-			batchManageWriteMapper.updateBatchOff(batchNo);
-			
-		} catch (Exception e) {
-			log.info(new LogUtil().catchLog(e));
-		}
-	}
+            } catch (Exception e) {
+                log.info(new LogUtil().catchLog(e));
+                return "배치그룹 생성 실패";
+            }
+        }
+        if (isSuccess) {
+            resultStr = "success";
+        }
 
-	public String selectBatchLog(int batchNo) {
+        return resultStr;
+    }
 
-		Query query = new Query(Criteria.where("batch_no").is(batchNo));
-		query.with(new Sort(Sort.Direction.DESC, "log_date"));
-		query.limit(300);
+    public void updateBatchOff(String batchNo) {
+        try {
+            batchManageWriteMapper.updateBatchOff(batchNo);
 
-		List<BatchLogMongo> bathcList = mongoTemplate.find(query, BatchLogMongo.class);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		for(BatchLogMongo vo : bathcList) {
-			vo.setBatch_start_date_desc(sdf.format(vo.getBatch_start_date()));
-			vo.setBatch_end_date_desc(sdf.format(vo.getBatch_end_date()));
-		}
-		
-		return gson.toJson(bathcList);
-	}
+        } catch (Exception e) {
+            log.info(new LogUtil().catchLog(e));
+        }
+    }
+
+    public String selectBatchLog(int batchNo) {
+
+        Query query = new Query(Criteria.where("batch_no").is(batchNo));
+        query.with(new Sort(Sort.Direction.DESC, "log_date"));
+        query.limit(300);
+
+        List<BatchLogMongo> bathcList = mongoTemplate.find(query, BatchLogMongo.class);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for (BatchLogMongo vo : bathcList) {
+            vo.setBatch_start_date_desc(sdf.format(vo.getBatch_start_date()));
+            vo.setBatch_end_date_desc(sdf.format(vo.getBatch_end_date()));
+        }
+
+        return gson.toJson(bathcList);
+    }
 
 }
