@@ -3,7 +3,7 @@ import axios from 'axios'
 let getBaseServerUrl = function () {
   let adminServerUrl = ''
   if (location.host === 'batchadmin.lunasoft.co.kr') { // 리얼환경
-    adminServerUrl = 'http://batchadmin.lunasoft.co.kr'
+    adminServerUrl = 'https://batchadmin.lunasoft.co.kr'
   } else { //  로컬 도메인
     // adminServerUrl = 'https://teladminapi.lunasoft.co.kr'
     adminServerUrl = 'http://localhost:8080'
