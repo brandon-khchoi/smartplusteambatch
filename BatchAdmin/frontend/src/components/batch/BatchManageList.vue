@@ -17,7 +17,7 @@
               <tbody>
               <tr>
                 <td colspan="5">
-                  <p class="b5tn_search" @click="createGroupModalOpen" >그룹 관리</p>
+                  <p class="btn_search" @click="createGroupModalOpen" >그룹 관리</p>
                 </td>
               </tr>
               <tr>
