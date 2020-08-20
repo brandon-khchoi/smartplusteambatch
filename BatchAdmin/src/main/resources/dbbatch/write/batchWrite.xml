@@ -4,6 +4,16 @@
 
 <mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbbatch.write.BatchManageWriteMapper">
 	
+	<update id="updateBatchUseYnByGroup" parameterType="map">
+		UPDATE
+			db_batch.tb_batch_info
+		SET
+			update_user_code = #{update_user_no},
+			use_yn = '0'
+		WHERE
+			batch_group_no = #{batch_group_no}
+	</update>
+	
 	<update id="updateBatchOff" parameterType="String">
 		UPDATE 
 			db_batch.tb_batch_info

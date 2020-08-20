@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.lunasoft.batchadmin.vo.batch.BatchGroupVO;
 import kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO;
 
+import java.util.HashMap;
+
 @Mapper
 public interface BatchManageWriteMapper {
 	int insertBatchInfo(BatchInfoVO batchInfo) throws Exception;
@@ -20,4 +22,6 @@ public interface BatchManageWriteMapper {
 	int deleteBatchGroup(String batchGroupNo) throws Exception;
 	
 	int updateBatchGroup(BatchGroupVO groupInfo) throws Exception;
+	
+	int updateBatchUseYnByGroup(HashMap<String, String> map);
 }

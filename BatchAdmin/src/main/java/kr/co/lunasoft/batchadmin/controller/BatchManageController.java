@@ -97,10 +97,11 @@ public class BatchManageController {
 	@RequestMapping(value = "/deleteBatchGroup", method= {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String deleteBatchGroup(
-			@RequestParam(name="groupNo") String groupNo
+			@RequestParam(name="groupNo") String groupNo,
+			@RequestParam(name="lunaNo") String lunaNo
 			){
 		
-		return batchManageService.deleteBatchGroup(groupNo);
+		return batchManageService.deleteBatchGroup(groupNo, lunaNo);
 	}
 	
 	@RequestMapping(value="searchBatch", method= {RequestMethod.GET, RequestMethod.POST})

@@ -170,11 +170,14 @@ public class BatchManageService {
         return resultStr;
     }
 
-    public String deleteBatchGroup(String batchGroupNo) {
-
-        int result;
+    public String deleteBatchGroup(String batchGroupNo, String lunaNo) {
+        
         try {
-            result = batchManageWriteMapper.deleteBatchGroup(batchGroupNo);
+            HashMap<String, String> map = new HashMap<>();
+            map.put("batchGroupNo", batchGroupNo);
+            map.put("lunaNo", lunaNo);
+            batchManageWriteMapper.updateBatchUseYnByGroup(map);
+            int result = batchManageWriteMapper.deleteBatchGroup(batchGroupNo);
             if (result == 1) {
                 return "success";
             } else {
