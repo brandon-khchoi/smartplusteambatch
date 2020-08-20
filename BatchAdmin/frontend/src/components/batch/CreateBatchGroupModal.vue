@@ -139,7 +139,6 @@ export default {
       item.luna_team_no = this.lunaTeamNo
 
       let tempDispluaNo = 0
-      console.log(this.batchGroupList)
       for (const idx in this.batchGroupList) {
         if (tempDispluaNo < Number(this.batchGroupList[idx].display_no)) {
           tempDispluaNo = this.batchGroupList[idx].display_no
