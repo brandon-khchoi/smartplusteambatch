@@ -139,12 +139,13 @@ export default {
       item.luna_team_no = this.lunaTeamNo
 
       let tempDispluaNo = 0
+      console.log(this.batchGroupList)
       for (const idx in this.batchGroupList) {
-        if (tempDispluaNo < this.batchGroupList[idx].display_no) {
+        if (tempDispluaNo < Number(this.batchGroupList[idx].display_no)) {
           tempDispluaNo = this.batchGroupList[idx].display_no
         }
       }
-      item.display_no = tempDispluaNo + 1
+      item.display_no = Number(tempDispluaNo) + 1
       this.batchGroupList.push(item)
     },
     deleteBatchGroup (groupNo, idx) {
@@ -154,7 +155,8 @@ export default {
         http
           .get('/batchManage/deleteBatchGroup', {
             params: {
-              groupNo: groupNo
+              groupNo: groupNo,
+              lunaNo: this.lunaNo
             }
           })
           .then(result => {
