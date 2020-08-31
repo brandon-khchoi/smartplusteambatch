@@ -14,7 +14,8 @@ export default {
     return {
       codeData: {
         noticeDisplay: '',
-        noticeType: ''
+        noticeType: '',
+        lunaTeamInfo: ''
       }
     }
   },
@@ -32,6 +33,7 @@ export default {
         .then(result => {
           this.codeData.batchCycleTypeCode = JSON.parse(result.data.batch_cycle_type_code)
           this.codeData.batchTimeTypeCode = JSON.parse(result.data.batch_time_type_code)
+          this.codeData.lunaTeamInfo = JSON.parse(result.data.team_no)
         })
         .catch(e => {
           console.log('Faq.vue : ' + e)

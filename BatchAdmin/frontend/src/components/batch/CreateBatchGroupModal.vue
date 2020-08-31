@@ -23,7 +23,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, idx) in batchGroupList" :key="idx">
+              <template v-for="(item, idx) in batchGroupList" >
+              <tr :key="idx">
                 <td>
                   <input type="text" v-model="item.batch_group_name" style="width:90%"/>
                 </td>
@@ -49,6 +50,7 @@
                   >삭제</p>
                 </td>
               </tr>
+              </template>
               </tbody>
             </table>
           </div>
@@ -87,7 +89,6 @@ export default {
   data () {
     return {
       lunaNo: store.getters.getUser.luna_no,
-      lunaTeamNo: store.getters.getUser.luna_team_no,
       groupName: '',
       selectedGroupId: '',
       batchGroupList: []
@@ -228,6 +229,9 @@ export default {
           })
       })
     }
+  },
+  props: {
+    'lunaTeamNo': Number
   }
 }
 </script>

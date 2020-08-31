@@ -1,7 +1,16 @@
 <template>
   <div class="BatchList">
     <div class="content employ">
-      <h1>배치 관리</h1>
+      <h1> 배치 관리
+        <template v-if="realLunaTeamNo === 5">
+          <select v-model="lunaTeamNo" style="width:10%" @change="teamChange()">
+            <template v-for="(val, code) in codeData.lunaTeamInfo">
+              <option :key="code" :value="Number(val.luna_team_no)" v-if="val.luna_dept_no === '2'">{{ val.luna_team_name }}</option>
+            </template>
+            <option value="999">리로드</option>
+          </select>
+        </template>
+      </h1>
       <div class="formContainer">
         <div class="tapContiner">
           <div class="searchWrap">
@@ -251,6 +260,7 @@ export default {
     return {
       lunaNo: store.getters.getUser.luna_no,
       lunaTeamNo: store.getters.getUser.luna_team_no,
+      realLunaTeamNo: store.getters.getUser.luna_team_no,
       batchInfoList: [],
       initBatchInfoList: [],
       batchGroupList: [],
@@ -313,6 +323,10 @@ export default {
     }
   },
   methods: {
+    teamChange () {
+      this.getbatchList()
+      this.getbatchGroupList()
+    },
     onWaypoint ({ going, direction }) {
       // going: in, out
       // direction: top, right, bottom, left
@@ -595,7 +609,7 @@ export default {
     },
     createGroupModalOpen () {
       this.$modal.show(CreateBatchGroupModal,
-        {}, { width: 700, height: 'auto' }
+        {lunaTeamNo: this.lunaTeamNo}, { width: 700, height: 'auto' }
       )
     },
     createNewBatch () {
