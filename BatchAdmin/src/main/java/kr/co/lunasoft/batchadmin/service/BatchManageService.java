@@ -120,6 +120,18 @@ public class BatchManageService {
                         //새 배치 생성
                         result = batchManageWriteMapper.insertBatchInfo(batchInfo);
                     } else {
+
+                        BatchInfoVO preBatchInfo = batchManageMapper.selectBathcInfoByBatchNo(batchInfo.getBatch_no());
+
+                        if ((preBatchInfo.getBatch_cycle_sec() != batchInfo.getBatch_cycle_sec()
+                                || preBatchInfo.getBatch_time_type_code() != batchInfo.getBatch_time_type_code()
+                                || preBatchInfo.getBatch_cycle_type_code() != batchInfo.getBatch_cycle_type_code()
+                                || ((preBatchInfo.getBatch_start_time() == null && batchInfo.getBatch_start_time() == null) || !preBatchInfo.getBatch_start_time().equals(batchInfo.getBatch_start_time()))
+                                || ((preBatchInfo.getBatch_call_url_addr() == null && batchInfo.getBatch_call_url_addr() == null) || !preBatchInfo.getBatch_call_url_addr().equals(batchInfo.getBatch_call_url_addr())))
+                                && !"0".equals(preBatchInfo.getUse_yn())) {
+                            //사용중인 배치의 주요 정보가 변경된 경우 배치내린다.
+                            batchInfo.setUse_yn("0");
+                        }
                         result = batchManageWriteMapper.updateBatchInfo(batchInfo);
                     }
                 }
@@ -171,7 +183,7 @@ public class BatchManageService {
     }
 
     public String deleteBatchGroup(String batchGroupNo, String lunaNo) {
-        
+
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put("batchGroupNo", batchGroupNo);

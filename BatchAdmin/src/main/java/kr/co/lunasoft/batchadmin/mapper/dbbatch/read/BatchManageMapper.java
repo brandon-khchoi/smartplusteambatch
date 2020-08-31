@@ -10,17 +10,19 @@ import kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO;
 
 @Mapper
 public interface BatchManageMapper {
-	public List<BatchInfoVO> selectBatchInfo();
-	public List<BatchInfoVO> selectBatchInfoByTeamNo(BatchInfoVO batchInfo);
-	public List<BatchGroupVO> selectBatchGroupInfo(String lunaTeamNo);
-	public List<BatchGroupVO> selectAllBatchGroupInfo(String lunaTeamNo);
+	List<BatchInfoVO> selectBatchInfo();
+	List<BatchInfoVO> selectBatchInfoByTeamNo(BatchInfoVO batchInfo);
+	List<BatchGroupVO> selectBatchGroupInfo(String lunaTeamNo);
+	List<BatchGroupVO> selectAllBatchGroupInfo(String lunaTeamNo);
 
-	public int selectBatchInfoCount(BatchInfoVO batchInfo);
+	int selectBatchInfoCount(BatchInfoVO batchInfo);
 	
-	public boolean hasBatchName(BatchInfoVO batchInfo);
-	public boolean hasBatchGroupName(BatchGroupVO vo);
+	boolean hasBatchName(BatchInfoVO batchInfo);
+	boolean hasBatchGroupName(BatchGroupVO vo);
 	
-	public List<BatchInfoVO> selectSearchBatchInfoByName(HashMap<String, String> map);
-	public List<BatchInfoVO> selectSearchBatchInfoByUrl(HashMap<String, String> map);
+	List<BatchInfoVO> selectSearchBatchInfoByName(HashMap<String, String> map);
+	List<BatchInfoVO> selectSearchBatchInfoByUrl(HashMap<String, String> map);
+	
+	BatchInfoVO selectBathcInfoByBatchNo(String batchNo);
 	
 }

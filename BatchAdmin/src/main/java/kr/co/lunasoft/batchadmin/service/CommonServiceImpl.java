@@ -385,6 +385,7 @@ public class CommonServiceImpl implements CommonService{
 			} else if ("batch".equals(menu)) {
 				result.put("batch_cycle_type_code", valueOperations.get("LC120"));
 				result.put("batch_time_type_code", valueOperations.get("LC121"));
+				result.put("team_no", valueOperations.get("team_no"));
 			}
 			
 			rtnResult = gson.toJson(result);
