@@ -15,7 +15,7 @@ export default {
   computed: {
     testMsgShow () {
       let msg = ''
-      if (location.host === 'ladmin.lunasoft.co.kr') {
+      if (location.host === 'batchadmin.lunasoft.co.kr') {
         msg = '' // 리얼
       } else {
         msg = 'TEST'
