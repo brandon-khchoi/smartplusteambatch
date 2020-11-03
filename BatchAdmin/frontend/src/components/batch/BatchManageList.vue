@@ -8,6 +8,7 @@
               <option :key="code" :value="Number(val.luna_team_no)" v-if="val.luna_dept_no === '2'">{{ val.luna_team_name }}</option>
             </template>
             <option value="999">리로드</option>
+            <option value="9999">스마트플러스 테스트</option>
           </select>
         </template>
       </h1>
