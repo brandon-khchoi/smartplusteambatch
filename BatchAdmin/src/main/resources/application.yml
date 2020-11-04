@@ -10,13 +10,13 @@ management:
 spring:
   profiles:
     active:
-#    - dblocal
-#    - redislocal
-#    - tomcatlocal
+    - dblocal
+    - redislocal
+    - tomcatlocal
     - loglocal
-    - dbReal
-    - redisReal
-    - tomcatReal
+#    - dbReal
+#    - redisReal
+#    - tomcatReal
     
   application:
     name: luna-admin
