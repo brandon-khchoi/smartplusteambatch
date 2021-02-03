@@ -48,10 +48,10 @@ public class Scheduler implements DisposableBean {
 
     @Scheduled(fixedDelay = 3000)
     public void batchExecutor() {
-//		if("172.31.46.41".equals(myIp)) {		//로컬환경에서 안돌도록  ip 체크
-        List<BatchInfoVO> batchInfoList = batchManageMapper.selectBatchInfo();
-        batchRegister(batchInfoList);
-//		}
+        if ("172.31.46.41".equals(myIp)) {        //로컬환경에서 안돌도록  ip 체크
+            List<BatchInfoVO> batchInfoList = batchManageMapper.selectBatchInfo();
+            batchRegister(batchInfoList);
+        }
     }
 
     private void setExecuteServerIP() {
