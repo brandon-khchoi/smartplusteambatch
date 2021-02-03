@@ -35,6 +35,10 @@ public class CallURLService implements Runnable {
 		try {
 			
 			Date now = new Date();
+			
+			//update Last_start_time
+			batchManageService.updateBeforeStartTime(batchInfo.getBatch_no(), now);
+			
 			String nowString = new SimpleDateFormat("yyyyMMddHHmmss").format(now);
 			
 			BatchLogMongo batchResult = new BatchLogMongo();

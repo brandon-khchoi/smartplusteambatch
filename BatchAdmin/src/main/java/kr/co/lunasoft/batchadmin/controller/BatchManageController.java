@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -77,10 +78,10 @@ public class BatchManageController {
 			)
 	@RequestMapping(value = "/updateBatch", method= {RequestMethod.POST})
 	@ResponseBody
-	public String updateBatch(
+	public HashMap<String, Object> updateBatch(
 			@RequestBody List<BatchInfoVO> batchInfoList
 			){
-		
+		log.info(batchInfoList.toString());
 		return batchManageService.updateBatchList(batchInfoList);
 	}
 	

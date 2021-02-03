@@ -7,19 +7,22 @@ import kr.co.lunasoft.batchadmin.mapper.dbbatch.read.BatchManageMapper;
 import kr.co.lunasoft.batchadmin.mapper.dbbatch.write.BatchManageWriteMapper;
 import kr.co.lunasoft.batchadmin.vo.batch.BatchGroupVO;
 import kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO;
+import kr.co.lunasoft.batchadmin.vo.batch.BatchUpdateResponse;
 import kr.co.lunasoft.batchadmin.vo.common.ResponseVo;
 import kr.co.lunasoft.batchadmin.vo.log.batch.BatchLogMongo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,13 +103,19 @@ public class BatchManageService {
         return gson.toJson(batchGroupList);
     }
 
-    public String updateBatchList(List<BatchInfoVO> batchInfoList) {
+    public HashMap<String, Object> updateBatchList(List<BatchInfoVO> batchInfoList) {
 
         String resultStr = "";
         boolean isSuccess = true;
 
+        HashMap<String, Object> resultMap = new HashMap<>();
+        List<BatchUpdateResponse> responseList = new ArrayList<>();
+
         for (int i = 0; i < batchInfoList.size(); i++) {
             BatchInfoVO batchInfo = batchInfoList.get(i);
+
+            BatchUpdateResponse response = new BatchUpdateResponse();
+            response.setBatchName(i + 1 + ". " + batchInfo.getBatch_name());
 
             int result = 0;
 
@@ -116,44 +125,54 @@ public class BatchManageService {
                 if (batchManageMapper.hasBatchName(batchInfo)) {
                     result = -1;
                 } else {
-                    if (batchInfo.getBatch_no() == null || "".equals(batchInfo.getBatch_no())) {
-                        //새 배치 생성
-                        result = batchManageWriteMapper.insertBatchInfo(batchInfo);
+
+                    if (batchInfo.getBatch_time_type_code() == 4 && !CronSequenceGenerator.isValidExpression(batchInfo.getBatch_start_time())) {
+                        result = -2;
                     } else {
+                        if (batchInfo.getBatch_no() == null || "".equals(batchInfo.getBatch_no())) {
+                            //새 배치 생성
+                            result = batchManageWriteMapper.insertBatchInfo(batchInfo);
+                        } else {
+                            BatchInfoVO preBatchInfo = batchManageMapper.selectBathcInfoByBatchNo(batchInfo.getBatch_no());
 
-                        BatchInfoVO preBatchInfo = batchManageMapper.selectBathcInfoByBatchNo(batchInfo.getBatch_no());
-
-                        if ((preBatchInfo.getBatch_cycle_sec() != batchInfo.getBatch_cycle_sec()
-                                || preBatchInfo.getBatch_time_type_code() != batchInfo.getBatch_time_type_code()
-                                || preBatchInfo.getBatch_cycle_type_code() != batchInfo.getBatch_cycle_type_code()
-                                || ((preBatchInfo.getBatch_start_time() == null && batchInfo.getBatch_start_time() == null) || !preBatchInfo.getBatch_start_time().equals(batchInfo.getBatch_start_time()))
-                                || ((preBatchInfo.getBatch_call_url_addr() == null && batchInfo.getBatch_call_url_addr() == null) || !preBatchInfo.getBatch_call_url_addr().equals(batchInfo.getBatch_call_url_addr())))
-                                && !"0".equals(preBatchInfo.getUse_yn())) {
-                            //사용중인 배치의 주요 정보가 변경된 경우 배치내린다.
-                            batchInfo.setUse_yn("0");
+                            if ((preBatchInfo.getBatch_cycle_sec() != batchInfo.getBatch_cycle_sec()
+                                    || preBatchInfo.getBatch_time_type_code() != batchInfo.getBatch_time_type_code()
+                                    || preBatchInfo.getBatch_cycle_type_code() != batchInfo.getBatch_cycle_type_code()
+                                    || ((preBatchInfo.getBatch_start_time() == null && batchInfo.getBatch_start_time() == null) || !preBatchInfo.getBatch_start_time().equals(batchInfo.getBatch_start_time()))
+                                    || ((preBatchInfo.getBatch_call_url_addr() == null && batchInfo.getBatch_call_url_addr() == null) || !preBatchInfo.getBatch_call_url_addr().equals(batchInfo.getBatch_call_url_addr())))
+                                    && !"0".equals(preBatchInfo.getUse_yn())) {
+                                //사용중인 배치의 주요 정보가 변경된 경우 배치내린다.
+                                batchInfo.setUse_yn("0");
+                            }
+                            result = batchManageWriteMapper.updateBatchInfo(batchInfo);
                         }
-                        result = batchManageWriteMapper.updateBatchInfo(batchInfo);
                     }
                 }
             } catch (Exception e) {
                 log.info(new LogUtil().catchLog(e));
             }
 
-            if (result == -1) {
-                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 동일 배치 명 존재 <br>";
-                isSuccess = false;
-            } else if (result == 1) {
-                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 성공 <br>";
+            if (result == 1) {
+                response.setErrorText("배치 업데이트 성공");
             } else {
-                resultStr += (i + 1) + ". " + batchInfo.getBatch_name() + " 업데이트 실패 <br>";
+                if (result == -2) {
+                    response.setErrorText("Expression 오류");
+                } else if (result == -1) {
+                    response.setErrorText("동일 배치 명 존재");
+                } else {
+                    response.setErrorText("배치 업데이트 실패");
+                }
                 isSuccess = false;
             }
+            responseList.add(response);
         }
         if (isSuccess) {
             resultStr = "success";
         }
+        resultMap.put("resultStr", resultStr);
+        resultMap.put("responseList", responseList);
 
-        return resultStr;
+        return resultMap;
     }
 
     public String deleteBatchInfo(List<BatchInfoVO> batchInfoList) {
@@ -277,6 +296,18 @@ public class BatchManageService {
     public void updateBatchOff(String batchNo) {
         try {
             batchManageWriteMapper.updateBatchOff(batchNo);
+
+        } catch (Exception e) {
+            log.info(new LogUtil().catchLog(e));
+        }
+    }
+
+    public void updateBeforeStartTime(String batchNo, Date startTime) {
+        try {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("batch_no", batchNo);
+            map.put("last_start_time", startTime);
+            batchManageWriteMapper.updateBeforeStartTime(map);
 
         } catch (Exception e) {
             log.info(new LogUtil().catchLog(e));

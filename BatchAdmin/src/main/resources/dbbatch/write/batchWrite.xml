@@ -4,6 +4,15 @@
 
 <mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbbatch.write.BatchManageWriteMapper">
 	
+	<update id="updateBeforeStartTime" parameterType="map">
+		UPDATE 
+			db_batch.tb_batch_info
+		SET
+			last_start_time = #{last_start_time}
+		WHERE
+			batch_no = #{batch_no}
+	</update>
+	
 	<update id="updateBatchUseYnByGroup" parameterType="map">
 		UPDATE
 			db_batch.tb_batch_info

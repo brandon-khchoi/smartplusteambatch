@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @ToString
@@ -41,7 +43,6 @@ public class BatchInfoVO {
 	private String create_date;
 	
 	private String create_user_code;
-	
 	private String create_user_no;
 	
 	@ApiModelProperty(required=false, hidden=true)
@@ -63,5 +64,8 @@ public class BatchInfoVO {
 	public String getKey() {
 		return this.batch_group_no + "_" + this.batch_no;
 	}
+	
+	private Date last_start_time;
+	
 	
 }

@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 @Mapper
 public interface BatchManageWriteMapper {
+	int updateBeforeStartTime(HashMap<String, Object> map) throws Exception;
+	
 	int insertBatchInfo(BatchInfoVO batchInfo) throws Exception;
 
 	int insertBatchGroup(BatchGroupVO groupInfo) throws Exception;
