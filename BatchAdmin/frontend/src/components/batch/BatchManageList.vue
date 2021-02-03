@@ -238,6 +238,7 @@ import store from '../../vuex/store'
 import ModalAlert from '@/components/common/modal/ModalAlert'
 import CreateBatchGroupModal from '@/components/batch/CreateBatchGroupModal'
 import BatchLogModal from '@/components/batch/BatchLogModal'
+import ModalBatchErrorTable from '@/components/common/modal/ModalBatchErrorTable'
 import Pagination from '@/components/common/Pagination'
 
 export default {
@@ -488,8 +489,14 @@ export default {
           item.batch_time_type_code = this.batchInfoList[idx].batch_time_type_code
           item.batch_start_time = this.batchInfoList[idx].batch_start_time
           item.batch_call_url_addr = this.batchInfoList[idx].batch_call_url_addr
-          item.update_user_code = '1'
-          item.update_user_no = this.lunaNo
+
+          if (this.batchInfoList[idx].batch_no === '') {
+            item.create_user_code = this.batchInfoList[idx].create_user_code
+            item.create_user_no = this.batchInfoList[idx].create_user_no
+          } else {
+            item.update_user_code = '1'
+            item.update_user_no = this.lunaNo
+          }
 
           itemList.push(item)
         }
@@ -536,39 +543,41 @@ export default {
       for (const idx in modList) {
         if (modList[idx].batch_name === '') {
           alertFlag = true
-          alertStr = '이름은 필수값입니다.'
+          alertStr = '이름은 필수 값입니다.'
           break
         } else if (modList[idx].batch_cycle_sec === '') {
           alertFlag = true
-          alertStr = '실행주기는 필수값입니다.'
+          alertStr = '실행주기는 필수 값입니다.'
           break
         } else if (modList[idx].use_yn === '') {
           alertFlag = true
-          alertStr = '동작여부는 필수값입니다.'
+          alertStr = '동작여부는 필수 값입니다.'
           break
         } else if (modList[idx].batch_cycle_type_code === '') {
           alertFlag = true
-          alertStr = '시작타입은 필수값입니다.'
+          alertStr = '시작타입은 필수 값입니다.'
           break
         } else if (modList[idx].batch_cycle_type_code.toString() === '2' || modList[idx].batch_cycle_type_code.toString() === '4') {
           if (modList[idx].batch_time_type_code === '') {
             alertFlag = true
-            alertStr = '지연시작(delay)시 시간포맷은 필수값입니다.'
+            alertStr = '지연시작(delay)시 시간포맷은 필수 값입니다.'
             break
           } else if (modList[idx].batch_start_time === '') {
             alertFlag = true
-            alertStr = '지연시작(delay)시 시작시간은 필수값입니다.'
+            alertStr = '지연시작(delay)시 시작시간은 필수 값입니다.'
             break
+          } else if (modList[idx].batch_time_type_code.toString() === '4' && modList[idx].batch_start_time !== '') {
+
           }
         } else if (modList[idx].batch_call_url_addr === '') {
           alertFlag = true
-          alertStr = '호출 URL은 필수값입니다.'
+          alertStr = '호출 URL은 필수 값입니다.'
           break
         }
       }
       if (alertFlag) {
         this.$modal.show(ModalAlert,
-          { title: '', text: alertStr }, { width: 450, height: 'auto' }
+          { title: '', html: alertStr }, { width: 450, height: 'auto' }
         )
         return
       }
@@ -576,7 +585,7 @@ export default {
       let context = this
 
       await this.modifySend(modList).then(function (result) {
-        if (result.data === 'success') {
+        if (result.data.resultStr === 'success') {
           context.allSelected = false
           context.$modal.show(ModalAlert,
             { title: '', text: '체크 항목 저장에 성공하였습니다.' }, { width: 450, height: 'auto' }
@@ -589,8 +598,8 @@ export default {
             }
           }, 100)
         } else {
-          context.$modal.show(ModalAlert,
-            { title: '', html: result.data }, { width: 450, height: 'auto' }
+          context.$modal.show(ModalBatchErrorTable,
+            { title: '', list: result.data.responseList }, { width: 800, height: 'auto' }
           )
         }
       })

@@ -84,25 +84,24 @@
 			batch_group_no,
 			batch_name,
 			batch_cycle_type_code,
-			case
-				when batch_cycle_type_code = 1 then 'instant'
-				when batch_cycle_type_code = 2 then 'delay'
-				when batch_cycle_type_code = 3 then 'instant only once'
-				when batch_cycle_type_code = 4 then 'delay only once'
-			END batch_cycle_type_code_desc,
+			cycle_code.comm_code_kor_name batch_cycle_type_code_desc,
 			batch_cycle_sec,
 			batch_time_type_code,
-			case 
-				when batch_time_type_code = 1 then 'HH'
-				when batch_time_type_code = 2 then 'HHmm'
-				when batch_time_type_code = 3 then 'yyyyMMddHHmm'
-			END batch_time_type_code_desc,
+			time_code.comm_code_kor_name batch_time_type_code_desc,
 			batch_start_time,
 			batch_call_url_addr,
 			work_yn,
-			use_yn
+			use_yn,
+			last_start_time
 		FROM
-			db_batch.tb_batch_info
+			db_batch.tb_batch_info batch
+			LEFT OUTER JOIN db_comm.tb_comm_code time_code
+			ON batch_time_type_code = time_code.comm_code
+			AND time_code.group_code = 'LC121'
+			LEFT OUTER JOIN db_comm.tb_comm_code cycle_code
+			ON batch_cycle_type_code = cycle_code.comm_code
+			AND cycle_code.group_code = 'LC120'
+			
 	</select>
 
 	<select id="selectBatchInfoCount" parameterType="kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO" resultType="Integer">
@@ -151,7 +150,8 @@
 			batch_start_time,
 			batch_call_url_addr,
 			work_yn,
-			use_yn
+			use_yn,
+			last_start_time
 		FROM (
 			SELECT
 				batch_no,
@@ -160,25 +160,23 @@
 				batch_cycle_type_code,
 				(SELECT luna_team_no FROM db_batch.tb_batch_group_info WHERE batch_group_no = t1.batch_group_no ) luna_team_no,
 				(SELECT use_yn FROM db_batch.tb_batch_group_info WHERE batch_group_no = t1.batch_group_no ) group_use_yn,
-				case
-					when batch_cycle_type_code = 1 then 'instant'
-					when batch_cycle_type_code = 2 then 'delay'
-					when batch_cycle_type_code = 3 then 'instant only once'
-					when batch_cycle_type_code = 4 then 'delay only once'
-				END batch_cycle_type_code_desc,
+				cycle_code.comm_code_kor_name batch_cycle_type_code_desc,
 				batch_cycle_sec,
 				batch_time_type_code,
-				case 
-					when batch_time_type_code = 1 then 'HH'
-					when batch_time_type_code = 2 then 'HHmm'
-					when batch_time_type_code = 3 then 'yyyyMMddHHmm'
-				END batch_time_type_code_desc,
+				time_code.comm_code_kor_name batch_time_type_code_desc,
 				batch_start_time,
 				batch_call_url_addr,
 				work_yn,
-				use_yn
+				use_yn,
+				last_start_time
 			FROM
 				db_batch.tb_batch_info t1
+				LEFT OUTER JOIN db_comm.tb_comm_code time_code
+				ON batch_time_type_code = time_code.comm_code
+				AND time_code.group_code = 'LC121'
+				LEFT OUTER JOIN db_comm.tb_comm_code cycle_code
+				ON batch_cycle_type_code = cycle_code.comm_code
+				AND cycle_code.group_code = 'LC120'
 		) t2 
 		WHERE 
 			luna_team_no = #{luna_team_no}
