@@ -135,6 +135,9 @@ public class BatchManageService {
                         } else {
                             BatchInfoVO preBatchInfo = batchManageMapper.selectBathcInfoByBatchNo(batchInfo.getBatch_no());
 
+                            if ("0".equals(batchInfo.getUse_yn())) {
+                                batchInfo.setLast_start_time(new Date(0));
+                            }
                             if ((preBatchInfo.getBatch_cycle_sec() != batchInfo.getBatch_cycle_sec()
                                     || preBatchInfo.getBatch_time_type_code() != batchInfo.getBatch_time_type_code()
                                     || preBatchInfo.getBatch_cycle_type_code() != batchInfo.getBatch_cycle_type_code()
