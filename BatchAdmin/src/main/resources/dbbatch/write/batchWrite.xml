@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.lunasoft.batchadmin.mapper.dbbatch.write.BatchManageWriteMapper">
-	
+
 	<update id="updateBeforeStartTime" parameterType="map">
-		UPDATE 
+		UPDATE
 			db_batch.tb_batch_info
 		SET
 			last_start_time = #{last_start_time}
 		WHERE
 			batch_no = #{batch_no}
 	</update>
-	
+
 	<update id="updateBatchUseYnByGroup" parameterType="map">
 		UPDATE
 			db_batch.tb_batch_info
@@ -22,9 +22,9 @@
 		WHERE
 			batch_group_no = #{batch_group_no}
 	</update>
-	
+
 	<update id="updateBatchOff" parameterType="String">
-		UPDATE 
+		UPDATE
 			db_batch.tb_batch_info
 		SET
 			update_user_code = '5',
@@ -32,12 +32,12 @@
 		WHERE
 			batch_no = #{batch_no}
 	</update>
-	
-	
+
+
 	<update id="updateBatchInfo" parameterType="kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO">
-		UPDATE 
+		UPDATE
 			db_batch.tb_batch_info
-		SET 
+		SET
 			batch_group_no = #{batch_group_no},
 			batch_name = #{batch_name},
 			batch_cycle_type_code = #{batch_cycle_type_code, jdbcType=INTEGER},
@@ -49,14 +49,17 @@
 			use_yn = #{use_yn},
 			update_user_code = #{update_user_code},
 			update_user_no = #{update_user_no}
-		WHERE 
+			<if test="last_start_time != null">
+				,last_start_time = #{last_start_time}
+			</if>
+		WHERE
 			batch_no = #{batch_no}
-			
+
 	</update>
-	
+
 	<insert id="insertBatchInfo" parameterType="kr.co.lunasoft.batchadmin.vo.batch.BatchInfoVO">
 		INSERT INTO
-			db_batch.tb_batch_info 
+			db_batch.tb_batch_info
 			(
 			batch_group_no,
 			batch_name,
@@ -84,7 +87,7 @@
 			#{create_user_no}
 		)
 	</insert>
-	
+
 	<insert id="insertBatchGroup" parameterType="kr.co.lunasoft.batchadmin.vo.batch.BatchGroupVO">
 		INSERT INTO
 			db_batch.tb_batch_group_info
@@ -107,7 +110,7 @@
 	</insert>
 
 	<update id="updateBatchGroup" parameterType="kr.co.lunasoft.batchadmin.vo.batch.BatchGroupVO">
-		UPDATE 
+		UPDATE
 			db_batch.tb_batch_group_info
 		SET
 			batch_group_name = #{batch_group_name},
@@ -115,23 +118,23 @@
 			use_yn = #{use_yn},
 			update_user_code = #{update_user_code},
 			update_user_no = #{update_user_no}
-		WHERE 
+		WHERE
 			batch_group_no = #{batch_group_no}
-				
+
 	</update>
 
 	<delete id="deleteBatchInfo" parameterType="String">
-		DELETE FROM 
+		DELETE FROM
 			db_batch.tb_batch_info
-		WHERE 
+		WHERE
 			batch_no = #{batchNo}
 	</delete>
 
 	<delete id="deleteBatchGroup" parameterType="String">
-		DELETE FROM 
+		DELETE FROM
 			db_batch.tb_batch_group_info
-		WHERE 
+		WHERE
 			batch_group_no = #{batch_group_no}
 	</delete>
-	
+
 </mapper>
