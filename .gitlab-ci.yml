@@ -21,15 +21,15 @@ stages:
 
 build-vue:
   stage: build-vue
-  image: node:latest
+  image: node:lts-alpine3.13
   script:
     - cd BatchAdmin/frontend
     - npm install && npm run build
-    
+
   artifacts:
     paths:
       - BatchAdmin/src/main/resources
-      
+
   only:
     #- develop
     - master
@@ -41,7 +41,7 @@ build-vue:
     # - apk add --no-cache curl jq python py-pip
     # - pip install awscli
     # - $(aws ecr get-login --no-include-email --region "${REGION}")
-    # 
+    #
   # script:
     # - echo "pulling image..."
     # - docker pull $DEV_REPOSITORY_URL:prebuild
@@ -74,7 +74,7 @@ master-build-docker:
     - pip install awscli
     - $(aws ecr get-login --no-include-email --region "${REGION}")
     - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
-    
+
   script:
     - cd BatchAdmin
     - echo "Building image..."
@@ -104,7 +104,7 @@ master-build-docker:
     # - develop
   # except:
     # - master,staging
-# 
+#
 # dev-build-docker:
   # image: docker:18.09
   # stage: dev-build-docker
@@ -112,7 +112,7 @@ master-build-docker:
     # - apk add --no-cache curl jq python py-pip
     # - pip install awscli
     # - $(aws ecr get-login --no-include-email --region "${REGION}")
-    # 
+    #
   # script:
     # - cd LunaAdmin
     # - echo "Building image..."
@@ -123,7 +123,7 @@ master-build-docker:
     # - develop
   # except:
     # - master,staging
-# 
+#
 # dev-deploy:
   # stage: dev-deploy
   # before_script:
@@ -140,11 +140,11 @@ master-build-docker:
   # - apk add --update --no-cache curl py-pip
   # - pip install awscli
   # - ECR_LOGIN="$(aws ecr get-login --no-include-email --region "${REGION}")"
-  # 
+  #
   # script:
     # - ssh centos@$LUNA_ADMIN_DEV_SERVER "sudo /root/dev_lunaadmin_startup_docker.sh"
   # only:
     # - develop
   # except:
     # - master,staging
-# 
+#
