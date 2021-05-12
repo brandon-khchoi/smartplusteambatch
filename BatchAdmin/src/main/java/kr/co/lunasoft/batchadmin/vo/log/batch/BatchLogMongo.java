@@ -1,17 +1,16 @@
 package kr.co.lunasoft.batchadmin.vo.log.batch;
 
-import java.util.Date;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 @Setter
 @Getter
 @ToString
-@Document(collection = "batch_log")
+@Document(collection = "batch_log_#{T(kr.co.lunasoft.batchadmin.common.MongoIndex).getIndexDate()}")
 public class BatchLogMongo {
 
 	private Date log_date;
