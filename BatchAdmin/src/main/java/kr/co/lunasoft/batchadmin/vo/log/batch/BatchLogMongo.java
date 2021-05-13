@@ -12,7 +12,8 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-@Document(collection = "batch_log_#{T(kr.co.lunasoft.batchadmin.common.MongoIndex).getIndexDate()}")
+@Document(collection = "batch_log_#{@mongoIndex.getIndexDate()}")
+//@CompoundIndex(name = "batch_no_1_log_date_-1", def = "{'batch_no': 1, 'log_date': -1}")
 public class BatchLogMongo {
 
     @Indexed(name = "log_date_-1", direction = IndexDirection.DESCENDING)
