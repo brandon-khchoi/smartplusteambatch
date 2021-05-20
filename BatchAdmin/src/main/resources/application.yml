@@ -211,7 +211,7 @@ spring:
 spring:
   profiles: redisReal
   redis:
-    host: prod-commerce-mallinfo.eehi9l.ng.0001.apn2.cache.amazonaws.com
+    host: production-ladmin.eehi9l.0001.apn2.cache.amazonaws.com
     port: 6379
     timeout: 2000
 
