@@ -17,7 +17,7 @@ spring:
     - dbReal
     - redisReal
     - tomcatReal
-    
+
   application:
     name: luna-admin
   jackson:
@@ -31,10 +31,10 @@ mybatis:
 ---
 spring:
   profiles: dblocal
-  
+
   mongodb:
     uri: mongodb://team-core:HappyEnding201910!@test-log.cluster-cghtjgokrsze.ap-northeast-2.docdb.amazonaws.com:27017
-  
+
   dbmall:
     datasource:
       hikari:
@@ -47,12 +47,12 @@ spring:
         max-lifetime: 1800000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true 
+          useServerPrepStmts: true
 
   dbmallWrite:
     datasource:
@@ -66,16 +66,16 @@ spring:
         max-lifetime: 1800000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true           
-          
+          useServerPrepStmts: true
+
   dbadmin:
     datasource:
-      hikari:                  
+      hikari:
         jdbc-url: jdbc:mysql://test-cluster.cluster-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:3306?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
         username: brian
         password: brian01076225850
@@ -85,13 +85,13 @@ spring:
         max-lifetime: 1800000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true 
-                    
+          useServerPrepStmts: true
+
   dbadminWrite:
     datasource:
       hikari:
@@ -104,21 +104,21 @@ spring:
         max-lifetime: 1800000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
           useServerPrepStmts: true
-   
+
 # dbReal 환경
 ---
 spring:
   profiles: dbReal
-  
+
   mongodb:
     uri: mongodb://team-core:WlsWkdlfgkrltlfgek!@prod-log.cluster-cghtjgokrsze.ap-northeast-2.docdb.amazonaws.com:5637
-  
+
   dbmall:
     datasource:
       hikari:
@@ -131,14 +131,14 @@ spring:
         max-lifetime: 60000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true 
+          useServerPrepStmts: true
 
-  
+
   dbmallWrite:
     datasource:
       hikari:
@@ -151,17 +151,17 @@ spring:
         max-lifetime: 60000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true           
-          
-          
+          useServerPrepStmts: true
+
+
   dbadmin:
     datasource:
-      hikari:                  
+      hikari:
         jdbc-url: jdbc:mysql://production-rds-admin.cluster-ro-cghtjgokrsze.ap-northeast-2.rds.amazonaws.com:56375?&autoReconnect=true&verifyServerCertificate=false&useSSL=false
         username: admin-base
         password: lunaAdminBase201906!
@@ -171,13 +171,13 @@ spring:
         max-lifetime: 60000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
-          useServerPrepStmts: true 
-                    
+          useServerPrepStmts: true
+
   dbadminWrite:
     datasource:
       hikari:
@@ -190,8 +190,8 @@ spring:
         max-lifetime: 60000 #1800000
         connection-timeout: 30000 #30000
         validation-timeout: 5000
-        #connection-test-query: SELECT 1      
-        data-source-properties: 
+        #connection-test-query: SELECT 1
+        data-source-properties:
           cachePrepStmts: true
           prepStmtCacheSize: 250
           prepStmtCacheSqlLimit: 2048
@@ -200,19 +200,21 @@ spring:
 ---
 
 spring:
-  profiles: redislocal    
+  profiles: redislocal
   redis:
     host: dev-redis.eehi9l.0001.apn2.cache.amazonaws.com
     port: 6379
+    timeout: 2000
 
 ---
 
 spring:
-  profiles: redisReal    
+  profiles: redisReal
   redis:
-    host: production-ladmin.eehi9l.0001.apn2.cache.amazonaws.com
-    port: 6379    
-         
+    host: prod-commerce-mallinfo.eehi9l.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
+    timeout: 2000
+
 
 ---
 spring:
@@ -229,25 +231,24 @@ spring:
 
 server:
   port: 8080
-        
+
   tomcat:
     accesslog:
       enabled: true
       prefix: access_log_ladmin-api
       pattern: "[%A] [%v] [%{yyyy-MM-dd HH:mm:ss}t]  [%a] [%h] [%S] [accesslog] [%m] [%r] [%{User-Agent}i]"
     basedir: E:\logs
-  
+
 ---
 spring:
   profiles: tomcatReal
 
 server:
   port: 80
-        
+
   tomcat:
     accesslog:
       enabled: true
       prefix: access_log_ladmin-api
       pattern: "[%A] [%v] [%{yyyy-MM-dd HH:mm:ss}t]  [%a] [%h] [%S] [accesslog] [%m] [%r] [%{User-Agent}i]"
-    basedir: /tomcat/      
- 
+    basedir: /tomcat/
