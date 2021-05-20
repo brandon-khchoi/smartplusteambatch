@@ -45,7 +45,7 @@ public class Scheduler implements DisposableBean {
     private CommonService commonService;
 
     public void codeRedis() throws Exception {
-        commonService.setCommonCodeList();
+//        commonService.setCommonCodeList();
     }
 
     @Scheduled(fixedDelay = 3000)
