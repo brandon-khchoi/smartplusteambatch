@@ -3,6 +3,7 @@ package kr.co.lunasoft.batchadmin.vo.log.batch;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,10 +14,10 @@ import java.util.Date;
 @Getter
 @ToString
 @Document(collection = "batch_log_#{@mongoIndex.getIndexDate()}")
-//@CompoundIndex(name = "batch_no_1_log_date_-1", def = "{'batch_no': 1, 'log_date': -1}")
+@CompoundIndex(name = "batch_no_1_log_date_-1", def = "{'batch_no': 1, 'log_date': -1}")
 public class BatchLogMongo {
 
-    @Indexed(name = "log_date_-1", direction = IndexDirection.DESCENDING)
+//    @Indexed(name = "log_date_-1", direction = IndexDirection.DESCENDING)
     private Date log_date;
     private int batch_no;
     private int batch_result_type_code;
