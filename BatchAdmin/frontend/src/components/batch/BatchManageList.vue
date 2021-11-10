@@ -2,7 +2,7 @@
   <div class="BatchList">
     <div class="content employ">
       <h1> 배치 관리
-        <template v-if="realLunaTeamNo === 19">
+        <template v-if="realLunaTeamNo === 38 || realLunaTeamNo === 41">
           <select v-model="lunaTeamNo" style="width:10%" @change="teamChange()">
             <template v-for="(val, code) in codeData.lunaTeamInfo">
               <option :key="code" :value="Number(val.luna_team_no)" v-if="val.luna_dept_no === '2' || val.luna_dept_no === '12'">{{ val.luna_team_name }}</option>
