@@ -21,7 +21,7 @@ stages:
 
 build-vue:
   stage: build-vue
-  image: node:lts-alpine3.13
+  image: node:14.18.1
   script:
     - cd BatchAdmin/frontend
     - npm install && npm run build
